@@ -1,0 +1,3 @@
+D:/ayp3/Ayp3/Nueva carpeta/cmake-build-debug/CMakeFiles/Nueva_carpeta.dir
+D:/ayp3/Ayp3/Nueva carpeta/cmake-build-debug/CMakeFiles/edit_cache.dir
+D:/ayp3/Ayp3/Nueva carpeta/cmake-build-debug/CMakeFiles/rebuild_cache.dir
