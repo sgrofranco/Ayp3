@@ -20,8 +20,6 @@ Nodo* CrearNodo(int dato){
 
 
 void DestruirNodo(Nodo* nodo){
-    printf("entro wn");
-
     free(nodo);
 }
 
