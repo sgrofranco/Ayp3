@@ -8,25 +8,35 @@ typedef struct Nodo{
 
 typedef struct Lista{
     Nodo* cabeza;
+    int largo;
 } Lista;
 
 Nodo* CrearNodo(int dato){
     Nodo* nodo = (struct Nodo*)malloc(sizeof(struct Nodo));
     nodo->siguiente = NULL;
+    nodo->dato = dato;;
     return nodo;
 }
 
+
 void DestruirNodo(Nodo* nodo){
+    printf("entro wn");
+
     free(nodo);
+}
+
+void PrintearNodo(Nodo* nodo){
+    printf("%i\n", nodo->dato);
 }
 
 void InsertarAlPrincipio(Lista* lista, int* entero){
     Nodo* nodo = CrearNodo(entero);
     nodo->siguiente = lista->cabeza;
     lista->cabeza = nodo;
+    lista->largo++;
 }
 
-void insertarAlFinal(Lista* lista, int* entero){
+void InsertarAlFinal(Lista* lista, int* entero){
     Nodo* nodo = CrearNodo(entero);
     if (lista->cabeza == NULL){
         lista->cabeza = nodo;
@@ -37,7 +47,17 @@ void insertarAlFinal(Lista* lista, int* entero){
         }
         puntero->siguiente=nodo;
     }
+    lista->largo++;
+}
 
+Lista* InicializarLista(int array[], int largoDelArray){
+    Lista* lista = (struct Lista*)malloc(sizeof(struct Lista));
+    lista->cabeza = NULL;
+    lista->largo = 0;
+    for(int i = 0; i < largoDelArray; i++){
+        InsertarAlFinal(lista,array[i]);
+    }
+    return lista;
 }
 
 
@@ -49,28 +69,82 @@ void printearLista (struct Nodo* n){
    }
 }
 
+int Obtener(int entero, Lista* lista){
+    if(lista->cabeza == NULL){
+        return NULL;
+    } else {
+        Nodo* puntero = lista->cabeza;
+        int posicion = 0;
+        while (posicion < entero && puntero->siguiente){
+            puntero = puntero->siguiente;
+            posicion++;
+        }
+        if (posicion != entero){
+            return NULL;
+        } else {
+            return puntero->dato;
+        }
+    }
+}
+
+void EliminarElemento(int posicion, Lista* lista){
+    if (lista->cabeza){
+        if (posicion==0) {
+            Nodo *eliminado = lista->cabeza;
+            lista->cabeza = lista->cabeza->siguiente;
+            DestruirNodo(eliminado);
+            lista->largo--;
+        } else if (posicion < lista->largo){
+            Nodo* puntero = lista->cabeza;
+            int posicionActual =0;
+            while (posicionActual < (posicion-1) && puntero->siguiente){
+                puntero = puntero->siguiente;
+                PrintearNodo(puntero);
+                posicionActual++;
+            }
+            Nodo* eliminado = puntero->siguiente;
+            puntero->siguiente = eliminado->siguiente;
+            DestruirNodo(eliminado);
+            lista->largo--;
+        }
+    }
+}
+
+int LargoDeLista(Lista* lista){
+    return lista->largo;
+}
+
+Lista OrdenarLista(Lista* lista){
+
+    int minimo = 0;
+    Nodo* Auxiliar = CrearNodo(0);
+
+    for (int i = 0; i < lista->largo; i++){
+
+        minimo=i;
+
+        for(int j = 0; j < lista->largo-i; j++){
+            if(Obtener(j, lista)< Obtener(minimo, lista)){
+                minimo=j;
+            }
+        }
+        Auxiliar = 
+    }
+
+
+}
+
 int main() {
 
-    struct Nodo* primero = NULL;
-    struct Nodo* segundo = NULL;
-    struct Nodo* tercero = NULL;
-
-    primero = (struct Nodo*)malloc(sizeof(struct Nodo));
-    segundo = (struct Nodo*)malloc(sizeof(struct Nodo));
-    tercero = (struct Nodo*)malloc(sizeof(struct Nodo));
-
-    primero->dato = 1;
-    primero->siguiente = segundo;
-
-    segundo->dato = 2;
-    segundo->siguiente = tercero;
-
-    tercero->dato = 3;
-    tercero->siguiente = NULL;
-
-    printearLista(primero);
-    int pepe[] = {1,3,2,4,1,2,41,5,12,};
-    printf("%i \n", sizeof(pepe)/sizeof(int));
+    int pepe[] = {1,3,2,4,1,2,41,5,12};
+    Lista* pepelista = InicializarLista(pepe, sizeof (pepe)/sizeof pepe[0]);
+    printearLista(pepelista->cabeza);
+    printf("El LARGO FINAL ES: %i\n",LargoDeLista(pepelista));
+    EliminarElemento(3,pepelista);
+    printearLista(pepelista->cabeza);
+    printf("El LARGO FINAL ES: %i\n",LargoDeLista(pepelista));
 
     return 0;
 }
+
+
