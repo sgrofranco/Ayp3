@@ -25,8 +25,9 @@ typedef struct ListaDeHistorialDeMaterias{
 Materia* crearMateria(char nombre[]){
     Materia* nuevaMateria = (struct Materia*) malloc(sizeof (struct Materia));
     nuevaMateria->nombreMateria = nombre;
+    nuevaMateria->siguiente = NULL;
     return nuevaMateria;
-};
+}
 
 ListaMaterias* inicializarListaMaterias(){
     ListaMaterias* listaMaterias = (struct ListaMaterias*)malloc(sizeof(struct ListaMaterias));
@@ -42,8 +43,32 @@ void agregarMateriaAListaDeMaterias(ListaMaterias* lista , char nombre[]){
         nuevaMateria->idMateria = lista->cantidadMaterias;
         lista->cabeza = nuevaMateria;
     }else{
-        printf("profe te lo corrijo en la prioxima semana \n att la banda de los millones \n");
+
+        Materia* materia = lista->cabeza;
+        while(materia->siguiente){
+            materia = materia->siguiente;
+        }
+        lista->cantidadMaterias++;
+        Materia* nuevaMateria = crearMateria(nombre);
+        nuevaMateria->idMateria = lista->cantidadMaterias;
+        materia->siguiente = nuevaMateria;
+
     }
+}
+
+void printearListaDeMaterias(ListaMaterias* lista){
+    Materia* materia = lista->cabeza;
+    printf("-----LISTA DE MATERIAS----\n");
+
+    do{
+        printf("--------------\n");
+        printf("Materia: %s \n",materia->nombreMateria );
+        printf("ID de Materia: %i\n", materia->idMateria);
+        printf("Lista de Correlativas: %li\n");
+        materia = materia->siguiente;
+    } while (materia != NULL);
+    printf("-----==============----\n");
+
 }
 
 Materia* getMateria(ListaMaterias* lista, int idMateriaABuscar){
@@ -64,4 +89,8 @@ HistorialDeLaMateria* CrearHsitorialDeLaMaateria(Materia* materia){
     historialDeLaMateria->infoMateria = materia;
     historialDeLaMateria->siguiente = NULL;
     return historialDeLaMateria;
+}
+
+void destruirHistorialMateria(HistorialDeLaMateria* historialDeLaMateria){
+    free(historialDeLaMateria);
 }
