@@ -31,19 +31,32 @@ int main() {
     char nombre[] = "pepe";
     char nombreMateria[] = "pepe en ayp3";
     char evilnombre[] = "EvilPepe";
+    char nombre2[] = "MateriaDeMierda";
 
     agregarAlumno(listaAlumnos,nombre,18);
     agregarAlumno(listaAlumnos,evilnombre,81);
     agregarMateriaAListaDeMaterias(listaMaterias, nombreMateria);
+    agregarMateriaAListaDeMaterias(listaMaterias, nombre2);
 
-    AnotarseAMateria(listaMaterias,listaAlumnos,1,1);
-    AnotarseAMateria(listaMaterias,listaAlumnos,1,1);
-    AnotarseAMateria(listaMaterias,listaAlumnos,1,2);
-    AnotarseAMateria(listaMaterias,listaAlumnos,1,2);
 
     printearListaDeAlumnos(listaAlumnos);
-    printf("%s\n",listaAlumnos->cabeza->siguiente->listaDeHistorialDeMaterias->cabeza->siguiente->infoMateria->nombreMateria);
-    printf("%s\n",listaAlumnos->cabeza->listaDeHistorialDeMaterias->cabeza->siguiente->infoMateria->nombreMateria);
+    printearListaDeMaterias(listaMaterias);
+
+    AnotarseAMateria(listaMaterias,listaAlumnos,1,1);
+    AnotarseAMateria(listaMaterias,listaAlumnos,1,1);
+    AnotarseAMateria(listaMaterias,listaAlumnos,1,2);
+    AnotarseAMateria(listaMaterias,listaAlumnos,1,2);
+
+    AnotarseAMateria(listaMaterias,listaAlumnos,2,2);
+    AnotarseAMateria(listaMaterias,listaAlumnos,2,2);
+
+
+    RendirMateria(listaAlumnos,listaMaterias,1,1);
+    RendirMateria(listaAlumnos,listaMaterias,1,1);
+
+    //printf("%i \n", listaAlumnos->cabeza->listaDeHistorialDeMaterias->cabeza->nota);
+    //printf("%s \n", listaAlumnos->cabeza->listaDeHistorialDeMaterias->cabeza->infoMateria->nombreMateria);
+    //printf("%s \n", listaAlumnos->cabeza->siguiente->listaDeHistorialDeMaterias->cabeza->infoMateria->nombreMateria);
 
     return 0;
 
