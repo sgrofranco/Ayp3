@@ -25,6 +25,7 @@ Alumno* CrearAlumno(char nombre[] , int edad){
     return nuevoAlumno;
 };
 
+
 void printearAlumno(Alumno* alumno){
     printf("Nombre: %s \n",alumno->Nombre);
     printf("edad: %i \n",alumno->edad);
@@ -40,6 +41,7 @@ ListaDeAlumnos* inicializarListaAlumnos(){
 
 void printearListaDeAlumnos(ListaDeAlumnos* lista){
     Alumno* alumno = lista->cabeza;
+    printf("-----LISTA DE ALUMNOS----\n");
     do{
         printf("--------------\n");
         printf("Nombre: %s \n",alumno->Nombre );
@@ -47,7 +49,9 @@ void printearListaDeAlumnos(ListaDeAlumnos* lista){
         printf("Legajo N:%li\n",alumno->numeroLegajo);
         alumno = alumno->siguiente;
     } while (alumno != NULL);
-};
+    printf("-----==============----\n");
+
+}
 
 //Aca podemos implementar otro metodo ya que no necesita estar ordenado
 //de esta forma lo ubica siempre en el fondo ordenado por el numero de legajo
@@ -85,11 +89,26 @@ void agregarMateriaAAlumno(Alumno* alumno, Materia* materia){
         alumno->listaDeHistorialDeMaterias->cabeza = CrearHsitorialDeLaMaateria(materia);
     } else {
         HistorialDeLaMateria* historialDeLaMateria = alumno->listaDeHistorialDeMaterias->cabeza;
-        while(historialDeLaMateria->siguiente){
-            historialDeLaMateria = historialDeLaMateria->siguiente;
+        do {
+            if(historialDeLaMateria->infoMateria->idMateria == materia->idMateria){
+                break;
+            } else if (historialDeLaMateria->siguiente){
+                historialDeLaMateria = historialDeLaMateria->siguiente;
+            } else {
+                break;
+            }
+        } while (historialDeLaMateria);
+
+        if(historialDeLaMateria->infoMateria->idMateria == materia->idMateria){
+            if(historialDeLaMateria->nota != NULL){
+                printf("ADVERTENCIA: Este Alumno ya rindio la Materia \n");
+            }else{
+                printf("ADVERTENCIA: Este Alumno ya se encuentra anotado a esta materia \n");
+            }
+        }else{
+            HistorialDeLaMateria* nuevoHistorialDeLaMateria = CrearHsitorialDeLaMaateria(materia);
+            historialDeLaMateria->siguiente = nuevoHistorialDeLaMateria;
         }
-        HistorialDeLaMateria* nuevoHistorialDeLaMateria = CrearHsitorialDeLaMaateria(materia);
-        historialDeLaMateria->siguiente = nuevoHistorialDeLaMateria;
     }
 }
 
@@ -99,3 +118,43 @@ void AnotarseAMateria(ListaMaterias* listaDeMaterias, ListaDeAlumnos* listaDeAlu
     agregarMateriaAAlumno(alumno,materia);
 }
 
+void CargarNota(Alumno* alumno,Materia* materia){
+    HistorialDeLaMateria* historialDeLaMateria = alumno->listaDeHistorialDeMaterias->cabeza;
+    do {
+        if(historialDeLaMateria->infoMateria->idMateria == materia->idMateria){
+            break;
+        }
+        else if(historialDeLaMateria->siguiente){
+            historialDeLaMateria = historialDeLaMateria->siguiente;
+        } else {
+            printf("ADVERTENCIA: No esta anotado a la materia, por lo que no puede rendirla\n");
+            break;
+        }
+    } while (historialDeLaMateria);
+    if(historialDeLaMateria->infoMateria->idMateria == materia->idMateria) {
+        if (historialDeLaMateria->nota != NULL) {
+            printf("ADVERTENCIA: Este Alumno ya rindio la Materia \n");
+        } else {
+            int nota = 0;
+            do {
+                printf("Que Nota Obtubo el alumno en el examen? \n");
+                scanf("%i",&nota);
+                if(nota > 10 || nota <1){
+                    printf("ADVERTENCIA: La Nota no es valida, tiene que ser de 1 a 10 \n");
+                }
+            }while(nota > 10 || nota <1);
+            if(nota < 4 ){
+                destruirHistorialMateria(historialDeLaMateria);
+            }else{
+                historialDeLaMateria->nota = nota;
+            }
+            // el puntero siguiente del anterior como quedara?
+            //nota de aprobado es 4
+        }
+    }
+}
+void RendirMateria(ListaDeAlumnos* listaDeAlumnos , ListaMaterias* listaDeMaterias,int idMateria , long int idAlumno){
+    Materia* materia = getMateria(listaDeMaterias,idMateria);
+    Alumno* alumno = getAlumno(listaDeAlumnos,idAlumno);
+    CargarNota(alumno,materia);
+}
