@@ -5,6 +5,7 @@ typedef struct Materia{
     int idMateria;
     char *nombreMateria;
     struct Materia* siguiente;
+    struct Materia* arrayCorrelativas[1];
 } Materia;
 
 typedef struct HistorialDeLaMateria{
@@ -26,34 +27,16 @@ Materia* crearMateria(char nombre[]){
     Materia* nuevaMateria = (struct Materia*) malloc(sizeof (struct Materia));
     nuevaMateria->nombreMateria = nombre;
     nuevaMateria->siguiente = NULL;
+    nuevaMateria->arrayCorrelativas[0] = malloc(sizeof (struct Materia));
+    nuevaMateria->arrayCorrelativas[0]->idMateria = NULL;
     return nuevaMateria;
-};
+}
 
 ListaMaterias* inicializarListaMaterias(){
     ListaMaterias* listaMaterias = (struct ListaMaterias*)malloc(sizeof(struct ListaMaterias));
     listaMaterias->cabeza = NULL;
     listaMaterias->cantidadMaterias = 0;
     return listaMaterias;
-}
-
-void agregarMateriaAListaDeMaterias(ListaMaterias* lista , char nombre[]){
-    if(lista->cabeza == NULL){
-        lista->cantidadMaterias++;
-        Materia* nuevaMateria = crearMateria(nombre);
-        nuevaMateria->idMateria = lista->cantidadMaterias;
-        lista->cabeza = nuevaMateria;
-    }else{
-        /*
-        Materia* materia = lista->cabeza;
-        while(materia->siguiente){
-            materia = materia->siguiente;
-        }
-        lista->cantidadMaterias++;
-        Materia* nuevaMateria = crearMateria(nombre);
-        nuevaMateria->idMateria = lista->cantidadMaterias;
-        materia->siguiente = nuevaMateria;
-        */
-    }
 }
 
 Materia* getMateria(ListaMaterias* lista, int idMateriaABuscar){
@@ -67,6 +50,57 @@ Materia* getMateria(ListaMaterias* lista, int idMateriaABuscar){
         printf("No Existe Materia con esa Id \n");
     }
 }
+//TODO: HACER ESTO MAS LINDO
+void printearListaDeMaterias(ListaMaterias* lista){
+    Materia* materia = lista->cabeza;
+    printf("-----LISTA DE MATERIAS----\n");
+    do{
+        printf("--------------\n");
+        printf("Materia: %s \n",materia->nombreMateria );
+        printf("ID de Materia: %i\n", materia->idMateria);
+        printf("Lista de Correlativas: %li\n");
+        materia = materia->siguiente;
+    } while (materia != NULL);
+    printf("-----==============----\n");
+}
+
+/// TODO: asiganar bucle while para que el usuario siga ingresando correlativas hasta que use el 0 para salir del ciclo
+/// TODO: TAMPOCO QUE PUEDAN EXISTIR CORRELATIVAS CIRCULARES
+void AsignarCorrelativas(ListaMaterias* lista , Materia* materia){
+    int eleccionUsuario = 0;
+    printf("¿Esta Posee alguna correlativa? 1-Si 0-No \n");
+    scanf("%i",&eleccionUsuario);
+    if(eleccionUsuario == 1){
+        while (eleccionUsuario != 0){
+            printearListaDeMaterias(lista);
+            printf("Que Correlativa desea agregar?: \n");
+            scanf("%i",&eleccionUsuario);
+            int largo = sizeof materia->arrayCorrelativas / sizeof materia->arrayCorrelativas[0];
+            materia->arrayCorrelativas[largo-1] = getMateria(lista, eleccionUsuario);
+            materia->arrayCorrelativas[largo] = malloc(sizeof(struct Materia));
+        }
+    }
+}
+
+void agregarMateriaAListaDeMaterias(ListaMaterias* lista , char nombre[]){
+    if(lista->cabeza == NULL){
+        lista->cantidadMaterias++;
+        Materia* nuevaMateria = crearMateria(nombre);
+        nuevaMateria->idMateria = lista->cantidadMaterias;
+        lista->cabeza = nuevaMateria;
+    }else{
+        Materia* materia = lista->cabeza;
+        while(materia->siguiente){
+            materia = materia->siguiente;
+        }
+        lista->cantidadMaterias++;
+        Materia* nuevaMateria = crearMateria(nombre);
+        nuevaMateria->idMateria = lista->cantidadMaterias;
+        materia->siguiente = nuevaMateria;
+        AsignarCorrelativas(lista,nuevaMateria);
+    }
+}
+
 
 HistorialDeLaMateria* CrearHsitorialDeLaMaateria(Materia* materia){
     HistorialDeLaMateria* historialDeLaMateria = (struct HistorialDeLaMateria*) malloc (sizeof (struct HistorialDeLaMateria));
