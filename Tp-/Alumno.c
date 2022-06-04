@@ -25,6 +25,7 @@ Alumno* CrearAlumno(char nombre[] , int edad){
     return nuevoAlumno;
 };
 
+
 void printearAlumno(Alumno* alumno){
     printf("Nombre: %s \n",alumno->Nombre);
     printf("edad: %i \n",alumno->edad);
@@ -40,6 +41,7 @@ ListaDeAlumnos* inicializarListaAlumnos(){
 
 void printearListaDeAlumnos(ListaDeAlumnos* lista){
     Alumno* alumno = lista->cabeza;
+    printf("-----LISTA DE ALUMNOS----\n");
     do{
         printf("--------------\n");
         printf("Nombre: %s \n",alumno->Nombre );
@@ -47,7 +49,9 @@ void printearListaDeAlumnos(ListaDeAlumnos* lista){
         printf("Legajo N:%li\n",alumno->numeroLegajo);
         alumno = alumno->siguiente;
     } while (alumno != NULL);
-};
+    printf("-----==============----\n");
+
+}
 
 //Aca podemos implementar otro metodo ya que no necesita estar ordenado
 //de esta forma lo ubica siempre en el fondo ordenado por el numero de legajo
@@ -80,6 +84,7 @@ Alumno* getAlumno(ListaDeAlumnos* lista , long int idAlumno){
     }
 }
 
+/// TODO: Volver a cambiar este metodo para revisar las correlativas
 void agregarMateriaAAlumno(Alumno* alumno, Materia* materia){
     if (alumno->listaDeHistorialDeMaterias->cabeza == NULL){
         alumno->listaDeHistorialDeMaterias->cabeza = CrearHsitorialDeLaMaateria(materia);
@@ -88,14 +93,18 @@ void agregarMateriaAAlumno(Alumno* alumno, Materia* materia){
         do {
             if(historialDeLaMateria->infoMateria->idMateria == materia->idMateria){
                 break;
+            } else if (historialDeLaMateria->siguiente){
+                historialDeLaMateria = historialDeLaMateria->siguiente;
+            } else {
+                break;
             }
-            historialDeLaMateria = historialDeLaMateria->siguiente;
         } while (historialDeLaMateria);
+
         if(historialDeLaMateria->infoMateria->idMateria == materia->idMateria){
             if(historialDeLaMateria->nota != NULL){
-                printf("Este Alumno ya rindio la Materia \n");
+                printf("ADVERTENCIA: Este Alumno ya rindio la Materia \n");
             }else{
-                printf("Este Alumno ya se encuentra anotado a esta materia \n");
+                printf("ADVERTENCIA: Este Alumno ya se encuentra anotado a esta materia \n");
             }
         }else{
             HistorialDeLaMateria* nuevoHistorialDeLaMateria = CrearHsitorialDeLaMaateria(materia);
@@ -104,6 +113,7 @@ void agregarMateriaAAlumno(Alumno* alumno, Materia* materia){
     }
 }
 
+//TODO: AHORA QUE EXISTEN LAS CORRELATIVAS TENEMOS QUE VOLVER A HACER ESTE METODO
 void AnotarseAMateria(ListaMaterias* listaDeMaterias, ListaDeAlumnos* listaDeAlumnos, int idMateria, long int idAlumno){
     Materia* materia = getMateria(listaDeMaterias,idMateria);
     Alumno* alumno = getAlumno(listaDeAlumnos,idAlumno);
@@ -116,23 +126,28 @@ void CargarNota(Alumno* alumno,Materia* materia){
         if(historialDeLaMateria->infoMateria->idMateria == materia->idMateria){
             break;
         }
-        if(historialDeLaMateria->siguiente){
+        else if(historialDeLaMateria->siguiente){
             historialDeLaMateria = historialDeLaMateria->siguiente;
+        } else {
+            printf("ADVERTENCIA: No esta anotado a la materia, por lo que no puede rendirla\n");
+            break;
         }
     } while (historialDeLaMateria);
     if(historialDeLaMateria->infoMateria->idMateria == materia->idMateria) {
         if (historialDeLaMateria->nota != NULL) {
-            printf("Este Alumno ya rindio la Materia \n");
+            printf("ADVERTENCIA: Este Alumno ya rindio la Materia \n");
         } else {
             int nota = 0;
             do {
                 printf("Que Nota Obtubo el alumno en el examen? \n");
                 scanf("%i",&nota);
-                if(nota > 11 && nota <0){
-                    printf("La Nota no es valida, tiene que ser de 0 a 10 \n");
+                if(nota > 10 || nota <1){
+                    printf("ADVERTENCIA: La Nota no es valida, tiene que ser de 1 a 10 \n");
                 }
-            }while(nota > 11 && nota <0);
+            }while(nota > 10 || nota <1);
             if(nota < 4 ){
+                ///Temporal
+                ///TODO: ESTO DESTRUYE EL NODO DE LA MATERIA PERO EL PUNTERO DEL ANTERIOR APUNTA A BASURA
                 destruirHistorialMateria(historialDeLaMateria);
             }else{
                 historialDeLaMateria->nota = nota;
