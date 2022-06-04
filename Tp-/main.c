@@ -31,22 +31,36 @@ int main() {
     char nombre[] = "pepe";
     char nombreMateria[] = "pepe en ayp3";
     char evilnombre[] = "EvilPepe";
-
+    char nombre2[] = "MateriaDeMierda";
+    char evilMateria[] = "pya4 ne epep";
     agregarAlumno(listaAlumnos,nombre,18);
     agregarAlumno(listaAlumnos,evilnombre,81);
     agregarMateriaAListaDeMaterias(listaMaterias, nombreMateria);
+    agregarMateriaAListaDeMaterias(listaMaterias, nombre2);
+    agregarMateriaAListaDeMaterias(listaMaterias, evilMateria);
 
-    AnotarseAMateria(listaMaterias,listaAlumnos,1,1);
-    AnotarseAMateria(listaMaterias,listaAlumnos,1,1);
-    AnotarseAMateria(listaMaterias,listaAlumnos,1,2);
-    AnotarseAMateria(listaMaterias,listaAlumnos,1,2);
 
     printearListaDeAlumnos(listaAlumnos);
-    printf("%s \n", listaAlumnos->cabeza->listaDeHistorialDeMaterias->cabeza->infoMateria->nombreMateria);
-    printf("%s \n", listaAlumnos->cabeza->siguiente->listaDeHistorialDeMaterias->cabeza->infoMateria->nombreMateria);
-    RendirMateria(listaAlumnos,listaMaterias,1,1);
+    printearListaDeMaterias(listaMaterias);
 
-    printf("%i \n", listaAlumnos->cabeza->listaDeHistorialDeMaterias->cabeza->nota);
+    AnotarseAMateria(listaMaterias,listaAlumnos,1,1);
+    AnotarseAMateria(listaMaterias,listaAlumnos,1,1);
+    AnotarseAMateria(listaMaterias,listaAlumnos,1,2);
+    AnotarseAMateria(listaMaterias,listaAlumnos,1,2);
+
+    AnotarseAMateria(listaMaterias,listaAlumnos,2,2);
+    AnotarseAMateria(listaMaterias,listaAlumnos,2,2);
+
+
+    RendirMateria(listaAlumnos,listaMaterias,1,1);
+    RendirMateria(listaAlumnos,listaMaterias,1,1);
+    ///TODO:ARREGLAR ESTO ( Maximo de correlativas)
+    printf("Materia Correlativa: %s \n", listaMaterias->cabeza->siguiente->siguiente->arrayCorrelativas[0]->nombreMateria);
+    printf("Materia Correlativa: %s \n", listaMaterias->cabeza->siguiente->siguiente->arrayCorrelativas[1]->nombreMateria);
+
+    //printf("%i \n", listaAlumnos->cabeza->listaDeHistorialDeMaterias->cabeza->nota);
+    //printf("%s \n", listaAlumnos->cabeza->listaDeHistorialDeMaterias->cabeza->infoMateria->nombreMateria);
+    //printf("%s \n", listaAlumnos->cabeza->siguiente->listaDeHistorialDeMaterias->cabeza->infoMateria->nombreMateria);
 
     return 0;
 
