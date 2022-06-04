@@ -84,6 +84,7 @@ Alumno* getAlumno(ListaDeAlumnos* lista , long int idAlumno){
     }
 }
 
+/// TODO: Volver a cambiar este metodo para revisar las correlativas
 void agregarMateriaAAlumno(Alumno* alumno, Materia* materia){
     if (alumno->listaDeHistorialDeMaterias->cabeza == NULL){
         alumno->listaDeHistorialDeMaterias->cabeza = CrearHsitorialDeLaMaateria(materia);
@@ -112,6 +113,7 @@ void agregarMateriaAAlumno(Alumno* alumno, Materia* materia){
     }
 }
 
+//TODO: AHORA QUE EXISTEN LAS CORRELATIVAS TENEMOS QUE VOLVER A HACER ESTE METODO
 void AnotarseAMateria(ListaMaterias* listaDeMaterias, ListaDeAlumnos* listaDeAlumnos, int idMateria, long int idAlumno){
     Materia* materia = getMateria(listaDeMaterias,idMateria);
     Alumno* alumno = getAlumno(listaDeAlumnos,idAlumno);
@@ -144,6 +146,8 @@ void CargarNota(Alumno* alumno,Materia* materia){
                 }
             }while(nota > 10 || nota <1);
             if(nota < 4 ){
+                ///Temporal
+                ///TODO: ESTO DESTRUYE EL NODO DE LA MATERIA PERO EL PUNTERO DEL ANTERIOR APUNTA A BASURA
                 destruirHistorialMateria(historialDeLaMateria);
             }else{
                 historialDeLaMateria->nota = nota;
