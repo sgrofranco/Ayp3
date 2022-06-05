@@ -39,6 +39,37 @@ ListaDeAlumnos* inicializarListaAlumnos(){
     return listaAlumnos;
 }
 
+void MostrarAlumnosPorRangoDeEdad(ListaDeAlumnos* listaDeAlumnos,int edadMinima,int edadMaxima){
+    Alumno* alumno = listaDeAlumnos->cabeza;
+    do{
+        if(alumno->edad > edadMinima && alumno->edad < edadMaxima){
+            printearAlumno(alumno);
+        }
+        alumno = alumno->siguiente;
+    } while (alumno);
+}
+
+int puedeRendirMaterias(Alumno* alumno){  ///Return 0 significa que no tiene materias para rendir y return 1 quiere decir que si
+    if(alumno->listaDeHistorialDeMaterias->cabeza == NULL){
+        printf("El Alumno no esta inscripto a ninguna Materia \n");
+        return 0;
+    }else{
+        int puedeRendir = 0 ;
+        HistorialDeLaMateria* historialDeLaMateria = alumno->listaDeHistorialDeMaterias->cabeza;
+        do {
+            if(historialDeLaMateria->nota == NULL){
+                if(puedeRendir == 0){
+                    printf("---Materias que Puede rendir Este Alumno--- \n");
+                }
+                printf("Materia: %s ID: %li \n",historialDeLaMateria->infoMateria->nombreMateria,historialDeLaMateria->infoMateria->idMateria);
+                puedeRendir++;
+            }
+            historialDeLaMateria = historialDeLaMateria->siguiente;
+        } while (historialDeLaMateria);
+        return puedeRendir;
+    }
+}
+
 void printearListaDeAlumnos(ListaDeAlumnos* lista){
     Alumno* alumno = lista->cabeza;
     printf("-----LISTA DE ALUMNOS----\n");
@@ -112,12 +143,57 @@ void agregarMateriaAAlumno(Alumno* alumno, Materia* materia){
         }
     }
 }
+///Este metodo le pasamos la Id de la materia que queremos averiguar si la tiene aprobada
+///Si Returnea 0 quiere decir que no la tiene aprobada y 1 si la tiene aprobada
+int VerificarMateriaAprobada(int idMateria , Alumno* alumno){
+    HistorialDeLaMateria* materia = alumno->listaDeHistorialDeMaterias->cabeza;
+    int materiaAprobada = 0;
+    while(materia){
+        if(materia->infoMateria->idMateria == idMateria){
+            if(materia->nota != NULL){
+                materiaAprobada++;
+            } else {
+                printf("El Alumno Esta Cursando %s , Que es una materia Correlativa \n",materia->infoMateria->nombreMateria);
+            }
+        }
+        if(!materia->siguiente || materiaAprobada == 1){
+            return materiaAprobada;
+        }
+        materia = materia->siguiente;
+    }
+}
+
+///Este Metodo nos permite saber si el alumno tiene aprobadas las correlativas necesarias para Anotarse a esta materia
+///Si returnea 0 quiere decir que puede anotarse a la materia , si returnea 1 quiere decir que le faltan aprobar algunas correlativas
+int verificadorDeMateriasCorrelativas(Materia* materia,Alumno* alumno){
+    int existenMateriasCorrelativasNoAprobadas = 0;
+    int i = 0;
+    while(materia->arrayCorrelativas[i]->idMateria != 0 && i < 5){
+        if(materia->arrayCorrelativas[i]->idMateria){
+            if(VerificarMateriaAprobada(materia->arrayCorrelativas[i]->idMateria,alumno) == 0){
+                existenMateriasCorrelativasNoAprobadas++;
+            }
+            if(existenMateriasCorrelativasNoAprobadas != 0){
+                return existenMateriasCorrelativasNoAprobadas;
+            }
+        }else{
+            break;
+        }
+        i++;
+    }
+    return existenMateriasCorrelativasNoAprobadas;
+}
 
 //TODO: AHORA QUE EXISTEN LAS CORRELATIVAS TENEMOS QUE VOLVER A HACER ESTE METODO
 void AnotarseAMateria(ListaMaterias* listaDeMaterias, ListaDeAlumnos* listaDeAlumnos, int idMateria, long int idAlumno){
     Materia* materia = getMateria(listaDeMaterias,idMateria);
     Alumno* alumno = getAlumno(listaDeAlumnos,idAlumno);
-    agregarMateriaAAlumno(alumno,materia);
+    if(verificadorDeMateriasCorrelativas(materia,alumno) == 0){
+        agregarMateriaAAlumno(alumno,materia);
+        printf("Se anoto al alumno %s a la materia %s \n",alumno->Nombre,materia->nombreMateria);
+    } else{
+        printf("por lo tanto no se puede anotar a la materia \n");
+    }
 }
 
 void CargarNota(Alumno* alumno,Materia* materia){
