@@ -33,7 +33,7 @@ Materia* crearMateria(char nombre[]){
     nuevaMateria->siguiente = NULL;
     for (int i = 0; i < 5; i++){
         nuevaMateria->arrayCorrelativas[i] = malloc(sizeof (struct Materia));
-        nuevaMateria->arrayCorrelativas[i] = NULL;
+        nuevaMateria->arrayCorrelativas[i]->idMateria = 0;
     }
     return nuevaMateria;
 }
@@ -58,16 +58,27 @@ Materia* getMateria(ListaMaterias* lista, int idMateriaABuscar){
 }
 
 void printearNombreDeMaterias(Materia* arrayDeMaterias[]){
-    int i = 0;
-    int contador = 0;
-    while (arrayDeMaterias[i] != NULL && i < 5){
-        printf("%s\n",arrayDeMaterias[i]->nombreMateria);
-        i++;
+    for(int i = 0; i < 5 ; i++){
+        if(arrayDeMaterias[i]->idMateria != 0){
+            printf("%s \n" , arrayDeMaterias[i]->nombreMateria);
+        }else{
+            break;
+        }
+    }
+    /*
+    while (arrayDeMaterias[i]->idMateria != 0 && i < 5){
+        printf(" %s \n",arrayDeMaterias[i]->nombreMateria);
         contador++;
+        if(arrayDeMaterias[i+1]){
+            i++;
+        }else{
+            i = 6;
+        }
     }
     if (contador == 0){
         printf("No hay correlativas");
-    }
+    }*/
+
 }
 
 //TODO: HACER ESTO MAS LINDO
@@ -79,7 +90,8 @@ void printearListaDeMaterias(ListaMaterias* lista){
         printf("Materia: %s \n",materia->nombreMateria );
         printf("ID de Materia: %i\n", materia->idMateria);
         printf("Lista de Correlativas: \n");
-        printearNombreDeMaterias(materia->arrayCorrelativas);
+        ///TODO: ARREGLAR ESTA COSA
+        //printearNombreDeMaterias(materia->arrayCorrelativas);
         materia = materia->siguiente;
     } while (materia != NULL);
     printf("\n-----==============----\n");
@@ -98,7 +110,7 @@ void AsignarCorrelativas(ListaMaterias* lista , Materia* materia){
             scanf("%i",&eleccionUsuario);
 
             int i = 0;
-            while (materia->arrayCorrelativas[i]){
+            while (materia->arrayCorrelativas[i]->idMateria != 0){
                 i++;
             }
             materia->arrayCorrelativas[i] = getMateria(lista, eleccionUsuario);
