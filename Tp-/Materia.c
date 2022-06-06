@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 /*
  * SETUP:
  *  Settings:
@@ -7,7 +8,7 @@
  */
 typedef struct Materia{
     int idMateria;
-    char *nombreMateria;
+    char nombreMateria[30];
     struct Materia* siguiente;
     struct Materia* arrayCorrelativas[5];
 } Materia;
@@ -29,7 +30,9 @@ typedef struct ListaDeHistorialDeMaterias{
 
 Materia* crearMateria(char nombre[]){
     Materia* nuevaMateria = (struct Materia*) malloc(sizeof (struct Materia));
-    nuevaMateria->nombreMateria = nombre;
+    strcpy(nuevaMateria->nombreMateria, nombre);
+    printf("materia: %s \n",nombre);
+    printf("materia: %s \n",nuevaMateria->nombreMateria);
     nuevaMateria->siguiente = NULL;
     for (int i = 0; i < 5; i++){
         nuevaMateria->arrayCorrelativas[i] = malloc(sizeof (struct Materia));
@@ -65,20 +68,6 @@ void printearNombreDeMaterias(Materia* arrayDeMaterias[]){
             break;
         }
     }
-    /*
-    while (arrayDeMaterias[i]->idMateria != 0 && i < 5){
-        printf(" %s \n",arrayDeMaterias[i]->nombreMateria);
-        contador++;
-        if(arrayDeMaterias[i+1]){
-            i++;
-        }else{
-            i = 6;
-        }
-    }
-    if (contador == 0){
-        printf("No hay correlativas");
-    }*/
-
 }
 
 //TODO: HACER ESTO MAS LINDO
@@ -90,29 +79,32 @@ void printearListaDeMaterias(ListaMaterias* lista){
         printf("Materia: %s \n",materia->nombreMateria );
         printf("ID de Materia: %i\n", materia->idMateria);
         printf("Lista de Correlativas: \n");
-        ///TODO: ARREGLAR ESTA COSA
         printearNombreDeMaterias(materia->arrayCorrelativas);
         materia = materia->siguiente;
     } while (materia != NULL);
     printf("\n-----==============----\n");
 }
 
-/// TODO: asiganar bucle while para que el usuario siga ingresando correlativas hasta que use el 0 para salir del ciclo
 /// TODO: TAMPOCO QUE PUEDAN EXISTIR CORRELATIVAS CIRCULARES
 void AsignarCorrelativas(ListaMaterias* lista , Materia* materia){
     int eleccionUsuario = 0;
     printf("¿Esta Posee alguna correlativa? 1-Si 0-No \n");
+
     scanf("%i",&eleccionUsuario);
     if(eleccionUsuario == 1){
         while (eleccionUsuario != 0){
             printearListaDeMaterias(lista);
             printf("Que Correlativa desea agregar?: \n");
+            printf("(Ingrese 0 para dejar de agregar correlativas) \n");
+
             scanf("%i",&eleccionUsuario);
             int i = 0;
             while (materia->arrayCorrelativas[i]->idMateria != 0){
                 i++;
             }
-            materia->arrayCorrelativas[i] = getMateria(lista, eleccionUsuario);
+            if(eleccionUsuario != 0){
+                materia->arrayCorrelativas[i] = getMateria(lista, eleccionUsuario);
+            }
         }
     }
 }
