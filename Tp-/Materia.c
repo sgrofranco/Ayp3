@@ -91,7 +91,7 @@ void printearListaDeMaterias(ListaMaterias* lista){
         printf("ID de Materia: %i\n", materia->idMateria);
         printf("Lista de Correlativas: \n");
         ///TODO: ARREGLAR ESTA COSA
-        //printearNombreDeMaterias(materia->arrayCorrelativas);
+        printearNombreDeMaterias(materia->arrayCorrelativas);
         materia = materia->siguiente;
     } while (materia != NULL);
     printf("\n-----==============----\n");
@@ -108,7 +108,6 @@ void AsignarCorrelativas(ListaMaterias* lista , Materia* materia){
             printearListaDeMaterias(lista);
             printf("Que Correlativa desea agregar?: \n");
             scanf("%i",&eleccionUsuario);
-
             int i = 0;
             while (materia->arrayCorrelativas[i]->idMateria != 0){
                 i++;
