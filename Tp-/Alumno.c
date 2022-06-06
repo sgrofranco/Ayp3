@@ -6,7 +6,7 @@
 ///TODO: GUARDAR NOMBRE DEL ALUMNO EN LOWER CASE PARA FACILITAR SU BUSQUEDA POR NOMBRE
 typedef struct Alumno{
     long int numeroLegajo;
-    char *Nombre;
+    char Nombre[30];
     int edad;
     struct ListaDeHistorialDeMaterias* listaDeHistorialDeMaterias;
     struct Alumno* siguiente;
@@ -19,7 +19,7 @@ typedef struct ListaDeAlumnos{
 
 Alumno* CrearAlumno(char nombre[] , int edad){
     Alumno* nuevoAlumno = (struct Alumno*) malloc(sizeof (Alumno));
-    nuevoAlumno->Nombre = nombre;
+    strcpy(nuevoAlumno->Nombre, nombre);
     nuevoAlumno->edad = edad;
     nuevoAlumno->siguiente  = NULL;
     nuevoAlumno->listaDeHistorialDeMaterias = (struct ListaDeHistorialDeMaterias*) malloc(sizeof (ListaDeHistorialDeMaterias));
