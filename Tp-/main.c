@@ -75,10 +75,12 @@ void realizarOperacionSolicitada(int eleccionUsuario , ListaMaterias* listaDeMat
         printf("1)generar 100 alumnos aleatorios \n");
         printf("2)printear Lista Alumnos \n");
         printf("3)printear Lista Materias \n");
+        printf("4)generar 100 materias aleatorias \n");
         scanf("%i",&eleccionDesarrollador);
         if(eleccionDesarrollador == 1){ generar100AlumnosAleatorios(listaDeAlumnos);}
         if(eleccionDesarrollador == 2){ printearListaDeAlumnos(listaDeAlumnos);}
         if(eleccionDesarrollador == 3){ printearListaDeMaterias(listaDeMaterias);}
+        if(eleccionDesarrollador == 4){ generar100MateriasAleatorias(listaDeMaterias);}
     }
 }
 
@@ -107,6 +109,8 @@ void Menu(ListaMaterias* listaDeMaterias,ListaDeAlumnos* listaDeAlumnos){
 int main() {
     ListaMaterias* listaMaterias = inicializarListaMaterias();
     ListaDeAlumnos* listaAlumnos = inicializarListaAlumnos();
+    InicializarBdd(listaAlumnos,listaMaterias);
+
     char nombre[] = "pepe";
     char nombreMateria[] = "pepe en ayp3";
     char evilnombre[] = "EvilPepe";
@@ -123,6 +127,7 @@ int main() {
 
     printearListaDeAlumnos(listaAlumnos);
 
+    printearListaDeMaterias(listaMaterias);
     Menu(listaMaterias,listaAlumnos);
 
     printearListaDeMaterias(listaMaterias);
@@ -147,7 +152,6 @@ int main() {
     printf("Materia Correlativa: %s \n", listaMaterias->cabeza->siguiente->siguiente->arrayCorrelativas[4]->nombreMateria);
     */
 
-    //printearListaDeMaterias(listaMaterias);
 
     //printf("%i \n", listaAlumnos->cabeza->listaDeHistorialDeMaterias->cabeza->nota);
     //printf("%s \n", listaAlumnos->cabeza->listaDeHistorialDeMaterias->cabeza->infoMateria->nombreMateria);
