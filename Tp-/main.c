@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <ctype.h>
 #import "Alumno.c"
 #import "Utilidades.c"
 #import "Materia.c"
@@ -37,7 +38,24 @@ void realizarOperacionSolicitada(int eleccionUsuario , ListaMaterias* listaDeMat
         scanf("%i",&edadMaxima);
         MostrarAlumnosPorRangoDeEdad(listaDeAlumnos,edadMinima,edadMaxima);
     }
-    if(eleccionUsuario == 5){///Rendir Materia
+    if(eleccionUsuario == 4){///Buscar Por Nombre
+        ///TODO:: HACERLO LOWCASE Para una mejor busqueda y hacerlo funcionar
+        char nombreABuscar[30];
+        printf("que nombre desea buscar en los alumnos? \n");
+        scanf("%s",&nombreABuscar);
+        /*for(int i = 0; nombreABuscar[i]; i++){///Cambia el string ingresado a Lowcase
+            nombreABuscar[i] = tolower(nombreABuscar[i]);
+        }
+        printf("LOWCASE: %s \n",nombreABuscar);*/
+        buscarAlumnoPorNombre(listaDeAlumnos,nombreABuscar);
+    }
+    if(eleccionUsuario == 5){///Promedio de alumno
+        long int idAlumnoABuscar;
+        printf("ID del alumno que desea obtener el promedio: \n");
+        scanf("%li",&idAlumnoABuscar);
+        getPromedioAlumno(listaDeAlumnos,idAlumnoABuscar);
+    }
+    if(eleccionUsuario == 6){///Rendir Materia
         printf("Id Del Alumno que desea ingresar la nota \n");
         long int idAlumno;
         scanf("%li",&idAlumno);
@@ -51,6 +69,17 @@ void realizarOperacionSolicitada(int eleccionUsuario , ListaMaterias* listaDeMat
             CargarNota(alumno, getMateria(listaDeMaterias,idMateria));
         }
     }
+    if(eleccionUsuario == 99){ /// TODO: DEJAR ESO PARA DEMOSTRAR LA CARGA MASIVA DE ALUMNOS Y OTROS METODOS PARA LOS PUNTOS OPCIONALES
+        int eleccionDesarrollador;
+        printf("Modo desarrollador \n");
+        printf("1)generar 100 alumnos aleatorios \n");
+        printf("2)printear Lista Alumnos \n");
+        printf("3)printear Lista Materias \n");
+        scanf("%i",&eleccionDesarrollador);
+        if(eleccionDesarrollador == 1){ generar100AlumnosAleatorios(listaDeAlumnos);}
+        if(eleccionDesarrollador == 2){ printearListaDeAlumnos(listaDeAlumnos);}
+        if(eleccionDesarrollador == 3){ printearListaDeMaterias(listaDeMaterias);}
+    }
 }
 
 void Menu(ListaMaterias* listaDeMaterias,ListaDeAlumnos* listaDeAlumnos){
@@ -63,9 +92,11 @@ void Menu(ListaMaterias* listaDeMaterias,ListaDeAlumnos* listaDeAlumnos){
         printf("2)Inscribir Alumno a una Materia \n");
         printf("3)Mostrar Alumnos por rango de edad \n");
         printf("4)Buscar Alumno por nombre \n");
-        printf("5)Ingresar Resultado de examen \n");
-        printf("6)Ingresar Nueva Materia \n");
+        printf("5)Mostrar Promedio del alumno \n");
+        printf("6)Ingresar Resultado de examen \n");
+        printf("7)Ingresar Nueva Materia \n");
         printf("0)Salir\n");
+        printf("99)Modo Desarrollador \n");
         scanf("%i", &eleccionUsuario);
         realizarOperacionSolicitada(eleccionUsuario,listaDeMaterias,listaDeAlumnos);
     }
@@ -79,7 +110,7 @@ int main() {
     char nombre[] = "pepe";
     char nombreMateria[] = "pepe en ayp3";
     char evilnombre[] = "EvilPepe";
-    char nombre2[] = "MateriaDeMierda";
+    char nombre2[] = "Fisica 1";
     char evilMateria[] = "pya4 ne epep";
 
     agregarAlumno(listaAlumnos,nombre,18);
@@ -90,7 +121,6 @@ int main() {
     agregarMateriaAListaDeMaterias(listaMaterias, "Materia de Langdom");
 
 
-    /// ACA ROMPE
     printearListaDeAlumnos(listaAlumnos);
 
     Menu(listaMaterias,listaAlumnos);
