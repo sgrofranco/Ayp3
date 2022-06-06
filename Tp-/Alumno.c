@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #import "Materia.c"
 
+
+///TODO: GUARDAR NOMBRE DEL ALUMNO EN LOWER CASE PARA FACILITAR SU BUSQUEDA POR NOMBRE
 typedef struct Alumno{
     long int numeroLegajo;
     char *Nombre;
@@ -105,6 +107,32 @@ void agregarAlumno(ListaDeAlumnos* lista,char nombre[], int edad){
     }
 }
 
+int nombreContieneBuscado(char nombreAlumno[],char nombreABuscar[]){
+    int isPresent = 0;
+    for (int i = 0; nombreAlumno[i] != '\0'; i++) {
+        isPresent = 0;
+        for (int j = 0; nombreABuscar[j] != '\0'; j++) {
+            if (nombreAlumno[i + j] != nombreABuscar[j]) {
+                isPresent = 0;
+                break;
+            }
+            isPresent = 1;
+        }
+        if (isPresent) {
+            break;
+        }
+    }
+    return isPresent;
+}
+
+void buscarAlumnoPorNombre(ListaDeAlumnos* listaDeAlumnos,char nombreABuscar[]){
+    Alumno* alumno = listaDeAlumnos->cabeza;
+    if(nombreContieneBuscado(alumno->Nombre,nombreABuscar) == 1){
+        printf("Alumno nombre: %s \n", alumno->Nombre);
+    }
+}
+
+
 Alumno* getAlumno(ListaDeAlumnos* lista , long int idAlumno){
     Alumno* alumno = lista->cabeza;
     while (alumno->numeroLegajo != idAlumno && alumno->siguiente){
@@ -112,6 +140,28 @@ Alumno* getAlumno(ListaDeAlumnos* lista , long int idAlumno){
     }
     if(alumno->numeroLegajo == idAlumno){
         return alumno;
+    }
+}
+
+void getPromedioAlumno(ListaDeAlumnos * lista,long int idAlumnoABuscar) {
+    Alumno* alumno = getAlumno(lista,idAlumnoABuscar);
+    if(alumno){
+        int materiasRendidas = 0;
+        int sumaMaterias = 0;
+        if(alumno->listaDeHistorialDeMaterias->cabeza){
+            HistorialDeLaMateria* historialDeLaMateria = alumno->listaDeHistorialDeMaterias->cabeza;
+            do {
+                if(historialDeLaMateria->nota){
+                    materiasRendidas++;
+                    sumaMaterias = sumaMaterias + historialDeLaMateria->nota;
+                }
+                historialDeLaMateria = historialDeLaMateria->siguiente;
+            } while (historialDeLaMateria);
+            ///TODO: QUE IMPRIMA UN FLOAT PARA QUE MUESTRE UN PROMEDIO MAS EXACTO
+            printf("El promedio del alumno es: %i \n",sumaMaterias/materiasRendidas);
+        }else{
+            printf("El Alumno no rindio ninguna Materia \n");
+        }
     }
 }
 
