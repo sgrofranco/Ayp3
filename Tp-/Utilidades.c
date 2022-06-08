@@ -83,28 +83,43 @@ void generar100MateriasAleatorias(ListaMaterias* listaMaterias){
 }
 
 void InicializarBdd(ListaDeAlumnos* listaDeAlumnos, ListaMaterias* listaMaterias){
-    FILE* file_bdd;
-    file_bdd = fopen("../bddMaterias.txt","r");
+    ///bdd alumno
+    FILE* fileBddAlumno;
+    fileBddAlumno = fopen("../bddAlumno.txt", "r");
     char line[128] = {0};
-    size_t len = 0;
-    ssize_t read;
-    if(!file_bdd){
+    int lineaActual = 0 ;
+    if(!fileBddAlumno){
         printf("no cargo la bdd llame a su tecnico mas cercano \n");
     }
-    while (fgets(line,128,file_bdd)){
+    while (fgets(line, 128, fileBddAlumno)){
+        lineaActual++;
         char* lineaSplit = strtok(line,",");
         char nombre[30];
         strcpy(nombre,lineaSplit);
         lineaSplit = strtok(NULL,",");
-        int edad = lineaSplit;
-        printf("");
+        int edad = atoi(lineaSplit);
         agregarAlumno(listaDeAlumnos,nombre,edad);
         printearListaDeAlumnos(listaDeAlumnos);
-        /*while(alumno!=NULL){
-            printf("%s \n",alumno);
-            alumno = strtok(NULL,"!");
-        }*/
+        /////// id de alumno es id de linea
+        lineaSplit = strtok(NULL,",");
+        while(lineaSplit != NULL) { /// aca llega 1!2
+            char materia[6];
+            char *puntero;
+            strcpy(materia, lineaSplit);
+            puntero = strtok(materia, "!");
+            int idMateria = atoi(puntero);
+            if (idMateria != 0) {
+                //AnotarseAMateria(listaMaterias,listaDeAlumnos,idMateria,lineaActual);
+                puntero = strtok(NULL, ":");
+                int nota = atoi(puntero);
+                if (nota != 0) {
+                    //CargarNota(getAlumno(listaDeAlumnos,lineaActual), getMateria(listaMaterias,idMateria),nota);
+                    printf("valores que quedan =  id %i , nota %i \n", idMateria, nota);
+                }
+            }
+            lineaSplit = strtok(NULL, ":");
+            printf(" next line : %s\n", lineaSplit);
+        }
     }
-
 }
 
