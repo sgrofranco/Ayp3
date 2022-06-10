@@ -109,20 +109,20 @@ void Menu(ListaMaterias* listaDeMaterias,ListaDeAlumnos* listaDeAlumnos){
 int main() {
     ListaMaterias* listaMaterias = inicializarListaMaterias();
     ListaDeAlumnos* listaAlumnos = inicializarListaAlumnos();
-    InicializarBdd(listaAlumnos,listaMaterias);
-
-    char nombre[] = "pepe";
     char nombreMateria[] = "pepe en ayp3";
-    char evilnombre[] = "EvilPepe";
     char nombre2[] = "Fisica 1";
     char evilMateria[] = "pya4 ne epep";
-
-    agregarAlumno(listaAlumnos,nombre,18);
-    agregarAlumno(listaAlumnos,evilnombre,81);
     agregarMateriaAListaDeMaterias(listaMaterias, nombreMateria);
     agregarMateriaAListaDeMaterias(listaMaterias, nombre2);
     agregarMateriaAListaDeMaterias(listaMaterias, evilMateria);
     agregarMateriaAListaDeMaterias(listaMaterias, "Materia de Langdom");
+    InicializarBdd(listaAlumnos,listaMaterias);
+
+    char nombre[] = "pepe";
+    char evilnombre[] = "EvilPepe";
+
+    agregarAlumno(listaAlumnos,nombre,18);
+    agregarAlumno(listaAlumnos,evilnombre,81);
 
 
     printearListaDeAlumnos(listaAlumnos);
@@ -137,11 +137,8 @@ int main() {
     AnotarseAMateria(listaMaterias,listaAlumnos,1,1);
     AnotarseAMateria(listaMaterias,listaAlumnos,1,2);
     AnotarseAMateria(listaMaterias,listaAlumnos,1,2);
-
     AnotarseAMateria(listaMaterias,listaAlumnos,2,2);
     AnotarseAMateria(listaMaterias,listaAlumnos,2,2);
-
-
     RendirMateria(listaAlumnos,listaMaterias,1,1);
     RendirMateria(listaAlumnos,listaMaterias,1,1);
     ///TODO:ARREGLAR ESTO ( Maximo de correlativas)
