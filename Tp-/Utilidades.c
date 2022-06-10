@@ -101,23 +101,22 @@ void cargarHistorialAlAlumno(ListaMaterias* listaMaterias,ListaDeAlumnos* listaD
     }
 };
 
-
+///TODO: VER FSEEK
 void InicializarBdd(ListaDeAlumnos* listaDeAlumnos, ListaMaterias* listaMaterias){
     ///bdd Materia
     FILE* fileBddMaterias;
     fileBddMaterias = fopen("../bddMaterias.txt","r");
     char lineBddMateria [128] = {0};
-    int lineaActualMateria;
+    int lineaActualMateria = 0;
     if(!fileBddMaterias){
         printf("No cargo la bdd llame a su tecnico mas cercano \n");
     }
     while (fgets(lineBddMateria , 128 , fileBddMaterias)){
         lineaActualMateria++;
         char* lineaSplitMateria = strtok(lineBddMateria,",");
-        char nombreMateria[30];
+        char nombreMateria[30]; ///TODO: ELIMINAR CASILLEROS SIN NADA
         strcpy(nombreMateria,lineaSplitMateria);
         lineaSplitMateria = strtok(NULL,",");
-        printf("antes while %s \n", lineaSplitMateria);
         if(listaMaterias->cabeza == NULL){///Esto es lo mismo que agregar materia a lista de materia
             listaMaterias->cantidadMaterias++;
             Materia* nuevaMateria = crearMateria(nombreMateria);
@@ -133,29 +132,34 @@ void InicializarBdd(ListaDeAlumnos* listaDeAlumnos, ListaMaterias* listaMaterias
             nuevaMateria->idMateria = listaMaterias->cantidadMaterias;
             materia->siguiente = nuevaMateria;
         }
+
         while(lineaSplitMateria != NULL){
             char correlativas[11];
             char *puntero;
             ///TODO: MEJORAR ESTO
             Materia* materia = getMateria(listaMaterias,lineaActualMateria);
             strcpy(correlativas,lineaSplitMateria);
-            printf("antes del correlativa %s \n", correlativas);
             puntero = strtok(correlativas,":");
             while(puntero != NULL){
                 printf("puntero: %s\n ", puntero);
                 int idMateriaCorrelativa;
                 idMateriaCorrelativa = atoi(puntero);
-                puntero = strtok(NULL,":");
                 //TODO: METODO ASIGNAR CORRELATIVA TIENE SCAN F
-                /*int i = 0;
-                while (materia->arrayCorrelativas[i]->idMateria != 0){
-                    i++;
+                if(puntero){
+                    int i = 0;
+                    while (materia->arrayCorrelativas[i]->idMateria != 0) {
+                        i++;
+                    }
+                    materia->arrayCorrelativas[i] = getMateria(listaMaterias, idMateriaCorrelativa);
+                }else{
+                    printf("no entra al if \n");
                 }
-                materia->arrayCorrelativas[i] = getMateria(listaMaterias, idMateriaCorrelativa);*/
+                puntero = strtok(NULL,":");
             }
             lineaSplitMateria = strtok(NULL,",");
         }
     }
+    fclose(fileBddMaterias);
     ///bdd alumno
     FILE* fileBddAlumno;
     fileBddAlumno = fopen("../bddAlumno.txt", "r");
@@ -190,6 +194,39 @@ void InicializarBdd(ListaDeAlumnos* listaDeAlumnos, ListaMaterias* listaMaterias
             printf(" next line : %s\n", lineaSplit);
         }
     }
+    fclose(fileBddAlumno);
+}
+///TODO: SOLUCIONAR PROBLEMA DE QUE CUANDO LOS CARGA ALGUNO DEJA LOS ESPACIOS VACIOS
+void guardarEnBdd(ListaMaterias* listaMaterias, ListaDeAlumnos* listaDeAlumnos){
+    FILE* fileBddMateria;
+    fileBddMateria = fopen("../bddMaterias.txt","w");
+    Materia* materia = listaMaterias->cabeza;
+    int lineaActual = 0;
+    while(materia){
+        lineaActual++;
+        char correlativas[11] = {0};
+        char lineaAEscribir[40]= {0};
+        int tieneCorrelativas = 0;
+        strcat(lineaAEscribir,materia->nombreMateria);
+        for(int i = 0 ; i < 5 ; i++){
+            if(materia->arrayCorrelativas[i]->idMateria != 0){
+                if(i != 0){ strcat(correlativas,":");}
+                char idmateria[2];
+                itoa(materia->arrayCorrelativas[i]->idMateria,idmateria,10);
+                strcat(correlativas,idmateria);
+                printf(" guarda correlativa : %s \n " , idmateria);
+                tieneCorrelativas++;
+            }
+        }
+        if(tieneCorrelativas != 0){
+            strcat(lineaAEscribir,",");
+            strcat(lineaAEscribir,correlativas);
+        }
+        printf("linea: %s \n",lineaAEscribir);
+        fprintf(fileBddMateria,"%s \n",lineaAEscribir);
+        materia = materia->siguiente;
+    }
+    fclose(fileBddMateria);
 }
 
 
