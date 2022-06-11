@@ -31,8 +31,6 @@ typedef struct ListaDeHistorialDeMaterias{
 Materia* crearMateria(char nombre[]){
     Materia* nuevaMateria = (struct Materia*) malloc(sizeof (struct Materia));
     strcpy(nuevaMateria->nombreMateria, nombre);
-    printf("materia: %s \n",nombre);
-    printf("materia: %s \n",nuevaMateria->nombreMateria);
     nuevaMateria->siguiente = NULL;
     for (int i = 0; i < 5; i++){
         nuevaMateria->arrayCorrelativas[i] = malloc(sizeof (struct Materia));
@@ -86,6 +84,7 @@ void printearListaDeMaterias(ListaMaterias* lista){
 }
 
 /// TODO: TAMPOCO QUE PUEDAN EXISTIR CORRELATIVAS CIRCULARES
+
 void AsignarCorrelativas(ListaMaterias* lista , Materia* materia){
     int eleccionUsuario = 0;
     printf("¿Esta Posee alguna correlativa? 1-Si 0-No \n");
@@ -108,6 +107,7 @@ void AsignarCorrelativas(ListaMaterias* lista , Materia* materia){
         }
     }
 }
+
 
 void agregarMateriaAListaDeMaterias(ListaMaterias* lista , char nombre[]){
     if(lista->cabeza == NULL){
