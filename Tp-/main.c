@@ -102,6 +102,7 @@ void Menu(ListaMaterias* listaDeMaterias,ListaDeAlumnos* listaDeAlumnos){
         scanf("%i", &eleccionUsuario);
         realizarOperacionSolicitada(eleccionUsuario,listaDeMaterias,listaDeAlumnos);
     }
+    guardarEnBdd(listaDeMaterias,listaDeAlumnos);
     ///TODO: Verificacion de que lo ingresado por el usuario este en el menu
 }
 
@@ -109,21 +110,14 @@ void Menu(ListaMaterias* listaDeMaterias,ListaDeAlumnos* listaDeAlumnos){
 int main() {
     ListaMaterias* listaMaterias = inicializarListaMaterias();
     ListaDeAlumnos* listaAlumnos = inicializarListaAlumnos();
-    char nombreMateria[] = "pepe en ayp3";
+    /*char nombreMateria[] = "pepe en ayp3";
     char nombre2[] = "Fisica 1";
     char evilMateria[] = "pya4 ne epep";
     agregarMateriaAListaDeMaterias(listaMaterias, nombreMateria);
     agregarMateriaAListaDeMaterias(listaMaterias, nombre2);
     agregarMateriaAListaDeMaterias(listaMaterias, evilMateria);
-    agregarMateriaAListaDeMaterias(listaMaterias, "Materia de Langdom");
+    agregarMateriaAListaDeMaterias(listaMaterias, "Materia de Langdom");*/
     InicializarBdd(listaAlumnos,listaMaterias);
-
-    char nombre[] = "pepe";
-    char evilnombre[] = "EvilPepe";
-
-    agregarAlumno(listaAlumnos,nombre,18);
-    agregarAlumno(listaAlumnos,evilnombre,81);
-
 
     printearListaDeAlumnos(listaAlumnos);
 
