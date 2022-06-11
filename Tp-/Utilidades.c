@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-void generar100AlumnosAleatorios(ListaDeAlumnos* listaDeAlumnos){
+void generarAlumnosAleatorios(ListaDeAlumnos* listaDeAlumnos, int maximo){
     char *listaNombres[]= {"Adel","Adonis","Ajaz","Akos","Aldo","Amets","Amaro","Aquiles","Algimantas","Alpidio","Amrane","Anish","Arian","Ayun","Azariel","Bagrat"
             ,"Bencomo","Bertino","Candi","Cesc","Cirino","Crisologo","Cruz","Danilo","Dareck","Dariel","Darin","Delmiro","Damen","Dilan","Dipa"
             ,"Domenico","Drago","Edivaldo","Elvis","Elyan","Emeric","Engracio","Ensa","Enaut","Eleazar","Eros","Eufemio","Feiyang"
@@ -14,7 +14,7 @@ void generar100AlumnosAleatorios(ListaDeAlumnos* listaDeAlumnos){
     char *listaDeApellidos[]={"Gonzalez","Rodriguez","Gomez","Fernandez","Lopez","Martinez","Diaz","Perez","Sanchez"
             ,"Romero","Garcia","Sosa","Benitez","Ramirez","Torres","Ruiz","Flores","Alvarez","Acosta","Rojas"};
 
-    for(int i = 0 ; i < 100 ; i++){
+    for(int i = 0 ; i < maximo ; i++){
         int nombre = -1;
         int apellido = 0;
         int edad = 10;
@@ -42,7 +42,7 @@ void generar100AlumnosAleatorios(ListaDeAlumnos* listaDeAlumnos){
     }
 }
 
-void generar100MateriasAleatorias(ListaMaterias* listaMaterias){
+void generarMateriasAleatorias(ListaMaterias* listaMaterias, int maximo){
 
     char* listaNombres[]={ "Algoritmos y programacion","Estructura de datos", "Base de datos", "Analisis matematico",
                            "Algebra","Fisica","Sistemas de representacion","Arquitectura de computadoras",
@@ -53,7 +53,7 @@ void generar100MateriasAleatorias(ListaMaterias* listaMaterias){
 
     char* listaDeNivel[]={ "1","2","3","4","5","6"};
 
-    for (int i = 0; i < 100; i++){
+    for (int i = 0; i < maximo; i++){
         int nombre = 0;
         int nivel = -1;
 
@@ -64,7 +64,6 @@ void generar100MateriasAleatorias(ListaMaterias* listaMaterias){
 
         while (nivel < 0 || nivel > 5){
             nivel = rand() %5;
-            printf("%i \n",nivel);
         }
         char* nivelDefinitivo = listaDeNivel[nivel];
 
@@ -75,7 +74,7 @@ void generar100MateriasAleatorias(ListaMaterias* listaMaterias){
         strcat(nombreCompleto, " ");
         strcat(nombreCompleto, nivelDefinitivo);
 
-        agregarMateriaAListaDeMaterias(listaMaterias,nombreCompleto);
+        agregarMateriaAListaDeMateriasSinCorrelativas(listaMaterias,nombreCompleto);
         printf("materia: %s \n",nombreCompleto);
 
     }
@@ -142,7 +141,6 @@ void InicializarBdd(ListaDeAlumnos* listaDeAlumnos, ListaMaterias* listaMaterias
             Materia* materia = getMateria(listaMaterias,lineaActualMateria);
             strcpy(correlativas,lineaSplitMateria);
             puntero = strtok(correlativas,":");
-            printf("%s ñasrkoiasdhlais udgask \n", puntero);
             while(puntero != NULL){
                 printf("puntero: %s \n ", puntero);
                 int idMateriaCorrelativa;
@@ -165,7 +163,7 @@ void InicializarBdd(ListaDeAlumnos* listaDeAlumnos, ListaMaterias* listaMaterias
     fclose(fileBddMaterias);
     ///bdd alumno
     FILE* fileBddAlumno;
-    fileBddAlumno = fopen("../bddAlumno.txt", "r");
+    fileBddAlumno = fopen("../bddAlumnos.txt", "r");
     char line[128] = {0};
     int lineaActual = 0 ;
     if(!fileBddAlumno){
@@ -233,7 +231,7 @@ void guardarEnBdd(ListaMaterias* listaMaterias, ListaDeAlumnos* listaDeAlumnos){
     fclose(fileBddMateria);
     ///Guardar Alumnos
     FILE* fileBddAlumno;
-    fileBddAlumno = fopen("../bddAlumno.txt","w");
+    fileBddAlumno = fopen("./bddAlumno.txt","w");
     Alumno* alumno = listaDeAlumnos->cabeza;
     lineaActual = 0;
     while(alumno){
