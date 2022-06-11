@@ -27,7 +27,7 @@ Alumno* CrearAlumno(char nombre[] , int edad){
     return nuevoAlumno;
 };
 
-
+///TODO: PRINTEAR MATERIAS APROBADAS DEL ALUMNO;
 void printearAlumno(Alumno* alumno){
     printf("Nombre: %s \n",alumno->Nombre);
     printf("edad: %i \n",alumno->edad);
@@ -77,9 +77,7 @@ void printearListaDeAlumnos(ListaDeAlumnos* lista){
     printf("-----LISTA DE ALUMNOS----\n");
     do{
         printf("--------------\n");
-        printf("Nombre: %s \n",alumno->Nombre );
-        printf("Edad: %i\n", alumno->edad);
-        printf("Legajo N:%li\n",alumno->numeroLegajo);
+        printearAlumno(alumno);
         alumno = alumno->siguiente;
     } while (alumno != NULL);
     printf("-----==============----\n");
@@ -127,8 +125,11 @@ int nombreContieneBuscado(char nombreAlumno[],char nombreABuscar[]){
 
 void buscarAlumnoPorNombre(ListaDeAlumnos* listaDeAlumnos,char nombreABuscar[]){
     Alumno* alumno = listaDeAlumnos->cabeza;
-    if(nombreContieneBuscado(alumno->Nombre,nombreABuscar) == 1){
-        printf("Alumno nombre: %s \n", alumno->Nombre);
+    while(alumno){
+        if(nombreContieneBuscado(alumno->Nombre,nombreABuscar) == 1){
+            printf("Alumno nombre: %s  ID: %li\n", alumno->Nombre,alumno->numeroLegajo);
+        }
+        alumno = alumno->siguiente;
     }
 }
 
@@ -190,6 +191,7 @@ void agregarMateriaAAlumno(Alumno* alumno, Materia* materia){
         }else{
             HistorialDeLaMateria* nuevoHistorialDeLaMateria = CrearHsitorialDeLaMaateria(materia);
             historialDeLaMateria->siguiente = nuevoHistorialDeLaMateria;
+            printf("Se anoto al alumno %s a la materia %s \n",alumno->Nombre,materia->nombreMateria);
         }
     }
 }
@@ -215,6 +217,7 @@ int VerificarMateriaAprobada(int idMateria , Alumno* alumno){
 
 ///Este Metodo nos permite saber si el alumno tiene aprobadas las correlativas necesarias para Anotarse a esta materia
 ///Si returnea 0 quiere decir que puede anotarse a la materia , si returnea 1 quiere decir que le faltan aprobar algunas correlativas
+
 int verificadorDeMateriasCorrelativas(Materia* materia,Alumno* alumno){
     int existenMateriasCorrelativasNoAprobadas = 0;
     int i = 0;
@@ -222,6 +225,7 @@ int verificadorDeMateriasCorrelativas(Materia* materia,Alumno* alumno){
         if(materia->arrayCorrelativas[i]->idMateria){
             if(VerificarMateriaAprobada(materia->arrayCorrelativas[i]->idMateria,alumno) == 0){
                 existenMateriasCorrelativasNoAprobadas++;
+                printf("El Alumno necesitar tener la materia : %s para poder cursar esta materia \n",materia->arrayCorrelativas[i]->nombreMateria);
             }
             if(existenMateriasCorrelativasNoAprobadas != 0){
                 return existenMateriasCorrelativasNoAprobadas;
@@ -240,7 +244,6 @@ void AnotarseAMateria(ListaMaterias* listaDeMaterias, ListaDeAlumnos* listaDeAlu
     Alumno* alumno = getAlumno(listaDeAlumnos,idAlumno);
     if(verificadorDeMateriasCorrelativas(materia,alumno) == 0){
         agregarMateriaAAlumno(alumno,materia);
-        printf("Se anoto al alumno %s a la materia %s \n",alumno->Nombre,materia->nombreMateria);
     } else{
         printf("por lo tanto no se puede anotar a la materia \n");
     }
