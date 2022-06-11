@@ -73,7 +73,7 @@ void printearListaDeMaterias(ListaMaterias* lista){
     Materia* materia = lista->cabeza;
     printf("-----LISTA DE MATERIAS----\n");
     do{
-        printf("--------------\n");
+        printf("-----------------------\n");
         printf("Materia: %s \n",materia->nombreMateria );
         printf("ID de Materia: %i\n", materia->idMateria);
         printf("Lista de Correlativas: \n");
@@ -86,23 +86,23 @@ void printearListaDeMaterias(ListaMaterias* lista){
 /// TODO: TAMPOCO QUE PUEDAN EXISTIR CORRELATIVAS CIRCULARES
 
 void AsignarCorrelativas(ListaMaterias* lista , Materia* materia){
-    int eleccionUsuario = 0;
+    int eleccion = 0;
     printf("¿Esta Posee alguna correlativa? 1-Si 0-No \n");
 
-    scanf("%i",&eleccionUsuario);
-    if(eleccionUsuario == 1){
-        while (eleccionUsuario != 0){
+    scanf("%i",&eleccion);
+    if(eleccion == 1){
+        while (eleccion != 0){
             printearListaDeMaterias(lista);
             printf("Que Correlativa desea agregar?: \n");
             printf("(Ingrese 0 para dejar de agregar correlativas) \n");
 
-            scanf("%i",&eleccionUsuario);
+            scanf("%i",&eleccion);
             int i = 0;
             while (materia->arrayCorrelativas[i]->idMateria != 0){
                 i++;
             }
-            if(eleccionUsuario != 0){
-                materia->arrayCorrelativas[i] = getMateria(lista, eleccionUsuario);
+            if(eleccion != 0){
+                materia->arrayCorrelativas[i] = getMateria(lista, eleccion);
             }
         }
     }
@@ -125,6 +125,24 @@ void agregarMateriaAListaDeMaterias(ListaMaterias* lista , char nombre[]){
         nuevaMateria->idMateria = lista->cantidadMaterias;
         materia->siguiente = nuevaMateria;
         AsignarCorrelativas(lista,nuevaMateria);
+    }
+}
+
+void agregarMateriaAListaDeMateriasSinCorrelativas(ListaMaterias* lista , char nombre[]){
+    if(lista->cabeza == NULL){
+        lista->cantidadMaterias++;
+        Materia* nuevaMateria = crearMateria(nombre);
+        nuevaMateria->idMateria = lista->cantidadMaterias;
+        lista->cabeza = nuevaMateria;
+    }else{
+        Materia* materia = lista->cabeza;
+        while(materia->siguiente){
+            materia = materia->siguiente;
+        }
+        lista->cantidadMaterias++;
+        Materia* nuevaMateria = crearMateria(nombre);
+        nuevaMateria->idMateria = lista->cantidadMaterias;
+        materia->siguiente = nuevaMateria;
     }
 }
 
