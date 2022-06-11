@@ -32,6 +32,17 @@ void printearAlumno(Alumno* alumno){
     printf("Nombre: %s \n",alumno->Nombre);
     printf("edad: %i \n",alumno->edad);
     printf("legajo: %li \n",alumno->numeroLegajo);
+    HistorialDeLaMateria* historialDeLaMateria = alumno->listaDeHistorialDeMaterias->cabeza ;
+    printf("--Materias Aprobadas--\n");
+    while (historialDeLaMateria){
+        printf("%s: ",historialDeLaMateria->infoMateria->nombreMateria);
+        if(historialDeLaMateria->nota != NULL){
+            printf("%i \n", historialDeLaMateria->nota);
+        } else {
+            printf("Materia en curso\n");
+        }
+        historialDeLaMateria = historialDeLaMateria->siguiente;
+    }
 }
 
 ListaDeAlumnos* inicializarListaAlumnos(){
@@ -76,7 +87,7 @@ void printearListaDeAlumnos(ListaDeAlumnos* lista){
     Alumno* alumno = lista->cabeza;
     printf("-----LISTA DE ALUMNOS----\n");
     do{
-        printf("--------------\n");
+        printf("-----------------------\n");
         printearAlumno(alumno);
         alumno = alumno->siguiente;
     } while (alumno != NULL);
