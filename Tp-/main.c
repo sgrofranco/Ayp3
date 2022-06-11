@@ -42,6 +42,7 @@ void realizarOperacionSolicitada(int eleccionUsuario , ListaMaterias* listaDeMat
         ///TODO:: HACERLO LOWCASE Para una mejor busqueda y hacerlo funcionar
         char nombreABuscar[30];
         printf("que nombre desea buscar en los alumnos? \n");
+        printf("(INGRESE EL NOMBRE EXACTO A COMO ESTA REGISTRADO)");
         scanf("%s",&nombreABuscar);
         /*for(int i = 0; nombreABuscar[i]; i++){///Cambia el string ingresado a Lowcase
             nombreABuscar[i] = tolower(nombreABuscar[i]);
@@ -69,18 +70,32 @@ void realizarOperacionSolicitada(int eleccionUsuario , ListaMaterias* listaDeMat
             CargarNota(alumno, getMateria(listaDeMaterias,idMateria));
         }
     }
+    if(eleccionUsuario == 7){///Ingresar nueva materia
+        printf("Nombre de la materia que desea ingresar \n");
+        char nombreMateria[30];
+        scanf("%s",&nombreMateria);
+        agregarMateriaAListaDeMaterias(listaDeMaterias,nombreMateria);
+    }
     if(eleccionUsuario == 99){ /// TODO: DEJAR ESO PARA DEMOSTRAR LA CARGA MASIVA DE ALUMNOS Y OTROS METODOS PARA LOS PUNTOS OPCIONALES
         int eleccionDesarrollador;
         printf("Modo desarrollador \n");
         printf("1)generar 100 alumnos aleatorios \n");
-        printf("2)printear Lista Alumnos \n");
-        printf("3)printear Lista Materias \n");
-        printf("4)generar 100 materias aleatorias \n");
+        printf("2)generar 100 materias aleatorias \n");
+        printf("3)printear Lista Alumnos \n");
+        printf("4)printear Lista Materias \n");
         scanf("%i",&eleccionDesarrollador);
-        if(eleccionDesarrollador == 1){ generar100AlumnosAleatorios(listaDeAlumnos);}
-        if(eleccionDesarrollador == 2){ printearListaDeAlumnos(listaDeAlumnos);}
-        if(eleccionDesarrollador == 3){ printearListaDeMaterias(listaDeMaterias);}
-        if(eleccionDesarrollador == 4){ generar100MateriasAleatorias(listaDeMaterias);}
+        if(eleccionDesarrollador == 1){
+            int maximaCantidad = 0;
+            printf("Cantidad de alumnos a crear\n");
+            scanf("%i",&maximaCantidad);
+            generarAlumnosAleatorios(listaDeAlumnos, maximaCantidad);}
+        if(eleccionDesarrollador == 2){
+            int maximaCantidad2 = 0;
+            printf("Cantidad de materias a crear\n");
+            scanf("%i",&maximaCantidad2);
+            generarMateriasAleatorias(listaDeMaterias,maximaCantidad2);}
+        if(eleccionDesarrollador == 3){ printearListaDeAlumnos(listaDeAlumnos);}
+        if(eleccionDesarrollador == 4){ printearListaDeMaterias(listaDeMaterias);}
     }
 }
 
