@@ -1,3 +1,6 @@
-nombreMuyCopado
+nombreMuyCopado,0
 nombreNoMuyCopado,1
 nombrePepeMateria,1:2
+nombreTuvieja,1:2:3
+nombreTest5,1:2:3:4
+testpepemama,0
