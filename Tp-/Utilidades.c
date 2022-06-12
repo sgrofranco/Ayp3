@@ -101,8 +101,6 @@ void cargarHistorialAlAlumno(ListaMaterias* listaMaterias,ListaDeAlumnos* listaD
     }
 };
 
-
-///TODO: VER FSEEK
 void InicializarBdd(ListaDeAlumnos* listaDeAlumnos, ListaMaterias* listaMaterias){
     ///bdd Materia
     FILE* fileBddMaterias;
@@ -115,9 +113,8 @@ void InicializarBdd(ListaDeAlumnos* listaDeAlumnos, ListaMaterias* listaMaterias
     while (fgets(lineBddMateria , 128 , fileBddMaterias)){
         lineaActualMateria++;
         char* lineaSplitMateria = strtok(lineBddMateria,",");
-        char nombreMateria[30]; ///TODO: ELIMINAR CASILLEROS SIN NADA
+        char nombreMateria[30];
         strcpy(nombreMateria,lineaSplitMateria);
-        printf("nombre : %s \n", nombreMateria);
         lineaSplitMateria = strtok(NULL,",");
         if(listaMaterias->cabeza == NULL){///Esto es lo mismo que agregar materia a lista de materia
             listaMaterias->cantidadMaterias++;
@@ -142,7 +139,6 @@ void InicializarBdd(ListaDeAlumnos* listaDeAlumnos, ListaMaterias* listaMaterias
             strcpy(correlativas,lineaSplitMateria);
             puntero = strtok(correlativas,":");
             while(puntero != NULL){
-                printf("puntero: %s \n ", puntero);
                 int idMateriaCorrelativa;
                 idMateriaCorrelativa = atoi(puntero);
                 //TODO: METODO ASIGNAR CORRELATIVA TIENE SCAN F
@@ -177,26 +173,26 @@ void InicializarBdd(ListaDeAlumnos* listaDeAlumnos, ListaMaterias* listaMaterias
         lineaSplit = strtok(NULL,",");
         int edad = atoi(lineaSplit);
         agregarAlumno(listaDeAlumnos,nombre,edad);
-        printearListaDeAlumnos(listaDeAlumnos);
         /////// id de alumno es id de linea
         lineaSplit = strtok(NULL,",");
-        while(lineaSplit != NULL) { /// aca cargamos todas las notas de alumno. ///TODO: CAMBIAR BDD ALUMNO A NOMBRE,EDAD,ID!NOTA:ID!NOTA
-            char materia[50];
+        if(lineaSplit != NULL) { /// aca cargamos todas las notas de alumno.
+            char materia[250];
             char *puntero;
             strcpy(materia, lineaSplit);
-            puntero = strtok(materia, "!");
-            int idMateria = atoi(puntero);
-            if (idMateria != 0) {
-                puntero = strtok(NULL, ":");
-                int nota = atoi(puntero);
-                cargarHistorialAlAlumno(listaMaterias,listaDeAlumnos,lineaActual,idMateria,nota);
+            puntero = strtok(materia,"!:");
+            while(puntero != NULL){
+                int id = 0;
+                int nota = 0;
+                id = atoi(puntero);
+                puntero = strtok(NULL,"!:");
+                nota = atoi(puntero);
+                cargarHistorialAlAlumno(listaMaterias,listaDeAlumnos,lineaActual,id,nota);
+                puntero = strtok(NULL,"!:");
             }
-            lineaSplit = strtok(NULL, ":");
         }
     }
     fclose(fileBddAlumno);
 }
-///TODO: SOLUCIONAR PROBLEMA DE QUE CUANDO LOS CARGA ALGUNO DEJA LOS ESPACIOS VACIOS
 void guardarEnBdd(ListaMaterias* listaMaterias, ListaDeAlumnos* listaDeAlumnos){
     FILE* fileBddMateria;
     fileBddMateria = fopen("../bddMaterias.txt","w");
@@ -231,8 +227,11 @@ void guardarEnBdd(ListaMaterias* listaMaterias, ListaDeAlumnos* listaDeAlumnos){
     fclose(fileBddMateria);
     ///Guardar Alumnos
     FILE* fileBddAlumno;
-    fileBddAlumno = fopen("./bddAlumno.txt","w");
+    fileBddAlumno = fopen("../bddAlumnos.txt","w");
     Alumno* alumno = listaDeAlumnos->cabeza;
+    if(!fileBddAlumno){
+        printf("no cargo la bdd llame a su tecnico mas cercano \n");
+    }
     lineaActual = 0;
     while(alumno){
         lineaActual++;
@@ -246,7 +245,11 @@ void guardarEnBdd(ListaMaterias* listaMaterias, ListaDeAlumnos* listaDeAlumnos){
         HistorialDeLaMateria* historialDeLaMateria = alumno->listaDeHistorialDeMaterias->cabeza;
         while(historialDeLaMateria){
             char historialDeLaMateriaACargar[6] = {0};
-            strcat(historialDeLaMateriaACargar,",");
+            if(historialDeLaMateria == alumno->listaDeHistorialDeMaterias->cabeza){
+                strcat(historialDeLaMateriaACargar,",");
+            }else{
+                strcat(historialDeLaMateriaACargar,":");
+            }
             char idmateria[10];
             itoa(historialDeLaMateria->infoMateria->idMateria,idmateria,10);
             strcat(historialDeLaMateriaACargar,idmateria);
@@ -262,7 +265,9 @@ void guardarEnBdd(ListaMaterias* listaMaterias, ListaDeAlumnos* listaDeAlumnos){
             strcat(lineaAEscribir,historialDeLaMateriaACargar);
             historialDeLaMateria = historialDeLaMateria->siguiente;
         }
+        printf(" linea definitiva a escribir %s \n",lineaAEscribir);
         fprintf(fileBddAlumno,"%s\n",lineaAEscribir);
         alumno = alumno->siguiente;
     }
+    fclose(fileBddAlumno);
 }
