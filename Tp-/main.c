@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <ctype.h>
 #import "Alumno.c"
 #import "Utilidades.c"
 #import "Materia.c"
@@ -39,10 +38,9 @@ void realizarOperacionSolicitada(int eleccionUsuario , ListaMaterias* listaDeMat
         MostrarAlumnosPorRangoDeEdad(listaDeAlumnos,edadMinima,edadMaxima);
     }
     if(eleccionUsuario == 4){///Buscar Por Nombre
-        ///TODO:: HACERLO LOWCASE Para una mejor busqueda y hacerlo funcionar
         char nombreABuscar[30];
         printf("que nombre desea buscar en los alumnos? \n");
-        printf("(INGRESE EL NOMBRE EXACTO A COMO ESTA REGISTRADO)");
+        printf("(INGRESE EL NOMBRE EXACTO A COMO ESTA REGISTRADO)\n");
         scanf("%s",&nombreABuscar);
         /*for(int i = 0; nombreABuscar[i]; i++){///Cambia el string ingresado a Lowcase
             nombreABuscar[i] = tolower(nombreABuscar[i]);
@@ -75,6 +73,20 @@ void realizarOperacionSolicitada(int eleccionUsuario , ListaMaterias* listaDeMat
         char nombreMateria[30];
         scanf("%s",&nombreMateria);
         agregarMateriaAListaDeMaterias(listaDeMaterias,nombreMateria);
+    }
+    if(eleccionUsuario == 8){///Buscar por id hacerlo mas lindo y con las validaciones
+        int eleccionDeBuscador = 1;
+        int ID = 0;
+        printf("Opcion 1-Materias , Opcion 2-Alumnos \n");
+        scanf("%i",&eleccionDeBuscador);
+        printf("Que ID desea Buscar? \n");
+        scanf("%i",&ID);
+        if(eleccionDeBuscador == 1){ ///TODO: ID<listaDeMaterias->largo
+            printearMateria(listaDeMaterias,ID);
+        }
+        if(eleccionDeBuscador == 2){///TODO: ID<listaDeAlumnos->largo
+            printearAlumno(getAlumno(listaDeAlumnos,ID));
+        }
     }
     if(eleccionUsuario == 99){ /// TODO: DEJAR ESO PARA DEMOSTRAR LA CARGA MASIVA DE ALUMNOS Y OTROS METODOS PARA LOS PUNTOS OPCIONALES
         int eleccionDesarrollador;
@@ -112,6 +124,7 @@ void Menu(ListaMaterias* listaDeMaterias,ListaDeAlumnos* listaDeAlumnos){
         printf("5)Mostrar Promedio del alumno \n");
         printf("6)Ingresar Resultado de examen \n");
         printf("7)Ingresar Nueva Materia \n");
+        printf("8)Mostrar Alumno o Materia por ID\n");
         printf("0)Salir\n");
         printf("99)Modo Desarrollador \n");
         scanf("%i", &eleccionUsuario);
@@ -125,44 +138,7 @@ void Menu(ListaMaterias* listaDeMaterias,ListaDeAlumnos* listaDeAlumnos){
 int main() {
     ListaMaterias* listaMaterias = inicializarListaMaterias();
     ListaDeAlumnos* listaAlumnos = inicializarListaAlumnos();
-    /*char nombreMateria[] = "pepe en ayp3";
-    char nombre2[] = "Fisica 1";
-    char evilMateria[] = "pya4 ne epep";
-    agregarMateriaAListaDeMaterias(listaMaterias, nombreMateria);
-    agregarMateriaAListaDeMaterias(listaMaterias, nombre2);
-    agregarMateriaAListaDeMaterias(listaMaterias, evilMateria);
-    agregarMateriaAListaDeMaterias(listaMaterias, "Materia de Langdom");*/
     InicializarBdd(listaAlumnos,listaMaterias);
-
-    printearListaDeAlumnos(listaAlumnos);
-
-    printearListaDeMaterias(listaMaterias);
     Menu(listaMaterias,listaAlumnos);
-
-    printearListaDeMaterias(listaMaterias);
-
-    /*
-    AnotarseAMateria(listaMaterias,listaAlumnos,1,1);
-    AnotarseAMateria(listaMaterias,listaAlumnos,1,1);
-    AnotarseAMateria(listaMaterias,listaAlumnos,1,2);
-    AnotarseAMateria(listaMaterias,listaAlumnos,1,2);
-    AnotarseAMateria(listaMaterias,listaAlumnos,2,2);
-    AnotarseAMateria(listaMaterias,listaAlumnos,2,2);
-    RendirMateria(listaAlumnos,listaMaterias,1,1);
-    RendirMateria(listaAlumnos,listaMaterias,1,1);
-    ///TODO:ARREGLAR ESTO ( Maximo de correlativas)
-    printf("Materia Correlativa: %s \n", listaMaterias->cabeza->siguiente->siguiente->arrayCorrelativas[0]->nombreMateria);
-    printf("Materia Correlativa: %s \n", listaMaterias->cabeza->siguiente->siguiente->arrayCorrelativas[1]->nombreMateria);
-    printf("Materia Correlativa: %s \n", listaMaterias->cabeza->siguiente->siguiente->arrayCorrelativas[2]->nombreMateria);
-    printf("Materia Correlativa: %s \n", listaMaterias->cabeza->siguiente->siguiente->arrayCorrelativas[3]->nombreMateria);
-    printf("Materia Correlativa: %s \n", listaMaterias->cabeza->siguiente->siguiente->arrayCorrelativas[4]->nombreMateria);
-    */
-
-
-    //printf("%i \n", listaAlumnos->cabeza->listaDeHistorialDeMaterias->cabeza->nota);
-    //printf("%s \n", listaAlumnos->cabeza->listaDeHistorialDeMaterias->cabeza->infoMateria->nombreMateria);
-    //printf("%s \n", listaAlumnos->cabeza->siguiente->listaDeHistorialDeMaterias->cabeza->infoMateria->nombreMateria);
-
     return 0;
-
 }
