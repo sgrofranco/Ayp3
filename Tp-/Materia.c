@@ -68,22 +68,25 @@ void printearNombreDeMaterias(Materia* arrayDeMaterias[]){
     }
 }
 
+void printearMateria(ListaMaterias* listaMaterias,int idMateria){
+    Materia* materia = getMateria(listaMaterias,idMateria);
+    printf("-----------------------\n");
+    printf("Materia: %s \n",materia->nombreMateria );
+    printf("ID de Materia: %i\n", materia->idMateria);
+    printf("Lista de Correlativas: \n");
+    printearNombreDeMaterias(materia->arrayCorrelativas);
+}
+
 //TODO: HACER ESTO MAS LINDO
 void printearListaDeMaterias(ListaMaterias* lista){
     Materia* materia = lista->cabeza;
     printf("-----LISTA DE MATERIAS----\n");
     do{
-        printf("-----------------------\n");
-        printf("Materia: %s \n",materia->nombreMateria );
-        printf("ID de Materia: %i\n", materia->idMateria);
-        printf("Lista de Correlativas: \n");
-        printearNombreDeMaterias(materia->arrayCorrelativas);
+        printearMateria(lista,materia->idMateria);
         materia = materia->siguiente;
     } while (materia != NULL);
     printf("\n-----==============----\n");
 }
-
-/// TODO: TAMPOCO QUE PUEDAN EXISTIR CORRELATIVAS CIRCULARES
 
 void AsignarCorrelativas(ListaMaterias* lista , Materia* materia){
     int eleccion = 0;
