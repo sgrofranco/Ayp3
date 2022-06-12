@@ -2,8 +2,6 @@
 #include <stdlib.h>
 #import "Materia.c"
 
-
-///TODO: GUARDAR NOMBRE DEL ALUMNO EN LOWER CASE PARA FACILITAR SU BUSQUEDA POR NOMBRE
 typedef struct Alumno{
     long int numeroLegajo;
     char Nombre[30];
@@ -27,7 +25,6 @@ Alumno* CrearAlumno(char nombre[] , int edad){
     return nuevoAlumno;
 };
 
-///TODO: PRINTEAR MATERIAS APROBADAS DEL ALUMNO;
 void printearAlumno(Alumno* alumno){
     printf("Nombre: %s \n",alumno->Nombre);
     printf("edad: %i \n",alumno->edad);
@@ -169,8 +166,7 @@ void getPromedioAlumno(ListaDeAlumnos * lista,long int idAlumnoABuscar) {
                 }
                 historialDeLaMateria = historialDeLaMateria->siguiente;
             } while (historialDeLaMateria);
-            ///TODO: QUE IMPRIMA UN FLOAT PARA QUE MUESTRE UN PROMEDIO MAS EXACTO
-            printf("El promedio del alumno es: %i \n",sumaMaterias/materiasRendidas);
+            printf("El promedio del alumno es: %.2f \n",(double)sumaMaterias/materiasRendidas);
         }else{
             printf("El Alumno no rindio ninguna Materia \n");
         }
