@@ -58,14 +58,17 @@ void realizarOperacionSolicitada(int eleccionUsuario , ListaMaterias* listaDeMat
         printf("Id Del Alumno que desea ingresar la nota \n");
         long int idAlumno;
         scanf("%li",&idAlumno);
-        ///TODO: Verificaciones
-        Alumno* alumno = getAlumno(listaDeAlumnos,idAlumno);
-        printearAlumno(alumno);
-        if(puedeRendirMaterias(alumno) != 0){
-            int idMateria;
-            printf("Que Materia quiere rendir? \n");
-            scanf("%i",&idMateria);
-            CargarNota(alumno, getMateria(listaDeMaterias,idMateria));
+        if(idAlumno > 0 && idAlumno <= listaDeAlumnos->cantidadAlumnos){
+            Alumno* alumno = getAlumno(listaDeAlumnos,idAlumno);
+            printearAlumno(alumno);
+            if(puedeRendirMaterias(alumno) != 0){
+                int idMateria;
+                printf("Que Materia quiere rendir? \n");
+                scanf("%i",&idMateria);
+                CargarNota(alumno, getMateria(listaDeMaterias,idMateria));
+            }
+        } else{
+            printf("No existe Alumno con esa ID , pruebe entre 1 y %i \n",listaDeAlumnos->cantidadAlumnos);
         }
     }
     if(eleccionUsuario == 7){///Ingresar nueva materia
@@ -78,14 +81,24 @@ void realizarOperacionSolicitada(int eleccionUsuario , ListaMaterias* listaDeMat
         int eleccionDeBuscador = 1;
         int ID = 0;
         printf("Opcion 1-Materias , Opcion 2-Alumnos \n");
-        scanf("%i",&eleccionDeBuscador);
+        do{
+            scanf("%i",&eleccionDeBuscador);
+        }while(eleccionDeBuscador < 1 && eleccionDeBuscador > 2);
         printf("Que ID desea Buscar? \n");
         scanf("%i",&ID);
-        if(eleccionDeBuscador == 1){ ///TODO: ID<listaDeMaterias->largo
-            printearMateria(listaDeMaterias,ID);
+        if(eleccionDeBuscador == 1){
+            if(ID > 0 && ID <= listaDeMaterias->cantidadMaterias){
+                printearMateria(listaDeMaterias,ID);
+            }else{
+                printf("No existe Materia con esa ID, tiene que ser entre 1 y %i \n",listaDeMaterias->cantidadMaterias);
+            }
         }
-        if(eleccionDeBuscador == 2){///TODO: ID<listaDeAlumnos->largo
-            printearAlumno(getAlumno(listaDeAlumnos,ID));
+        if(eleccionDeBuscador == 2){
+            if(ID > 0 && ID <= listaDeAlumnos->cantidadAlumnos){
+                printearAlumno(getAlumno(listaDeAlumnos,ID));
+            } else{
+                printf("No existe Alumno con es ID , tiene que ser entre 1 y %i \n",listaDeAlumnos->cantidadAlumnos);
+            }
         }
     }
     if(eleccionUsuario == 99){ /// TODO: DEJAR ESO PARA DEMOSTRAR LA CARGA MASIVA DE ALUMNOS Y OTROS METODOS PARA LOS PUNTOS OPCIONALES
@@ -131,7 +144,6 @@ void Menu(ListaMaterias* listaDeMaterias,ListaDeAlumnos* listaDeAlumnos){
         realizarOperacionSolicitada(eleccionUsuario,listaDeMaterias,listaDeAlumnos);
     }
     guardarEnBdd(listaDeMaterias,listaDeAlumnos);
-    ///TODO: Verificacion de que lo ingresado por el usuario este en el menu
 }
 
 
