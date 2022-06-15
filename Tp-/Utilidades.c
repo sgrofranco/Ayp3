@@ -293,9 +293,8 @@ int esUnChar(char character[]){
         if(i != 0) {
             return 0;
         }
-        return 1;
     }
-
+ return 1;
 }
 
 void pagiandoDeAlumnos(ListaDeAlumnos* listaDeAlumnos){
