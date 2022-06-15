@@ -158,6 +158,22 @@ HistorialDeLaMateria* CrearHsitorialDeLaMaateria(Materia* materia){
     return historialDeLaMateria;
 }
 
-void destruirHistorialMateria(HistorialDeLaMateria* historialDeLaMateria){
-    free(historialDeLaMateria);
+void destruirHistorialMateria(ListaDeHistorialDeMaterias* listaDeHistorialDeMaterias,int idAeliminar){
+    if(listaDeHistorialDeMaterias->cabeza->infoMateria->idMateria == idAeliminar){
+        HistorialDeLaMateria* HistorialAEliminar = listaDeHistorialDeMaterias->cabeza;
+        listaDeHistorialDeMaterias->cabeza = HistorialAEliminar->siguiente;
+        free(HistorialAEliminar);
+    }else{
+        HistorialDeLaMateria* historialDelaMateria = listaDeHistorialDeMaterias->cabeza;
+        while(historialDelaMateria->siguiente->infoMateria->idMateria != idAeliminar){
+            historialDelaMateria = historialDelaMateria->siguiente;
+        }
+        HistorialDeLaMateria* historialAElminiar = historialDelaMateria->siguiente;
+        if(historialAElminiar->siguiente){
+            historialDelaMateria->siguiente = historialAElminiar->siguiente;
+        }else{
+            historialDelaMateria->siguiente = NULL;
+        }
+        free(historialAElminiar);
+    }
 }
