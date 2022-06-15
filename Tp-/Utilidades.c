@@ -271,3 +271,30 @@ void guardarEnBdd(ListaMaterias* listaMaterias, ListaDeAlumnos* listaDeAlumnos){
     }
     fclose(fileBddAlumno);
 }
+
+///ESTE METEDO INDICA SI SE INGERSO UN INT EN EL SCANF, DEVUELE 1 SI ES UN INT Y 0 SI HAY
+/// ALGUN CHAR EN LO INGRESADO
+int SeIngresoUnIntEnElScan(int integer){
+    if(integer == 0){
+        printf("0");
+        return 0;
+    } else {
+        printf("1");
+        return 1;
+    }
+}
+
+///ESTE METEDO INDICA SI SE INGERSO UN NUMERO EN EL STRING, DEVUELVE 1 SI NO HAY NUMEROS
+/// Y DEUVLE 0 SI HAY ALGUNO
+int esUnChar(char character[]){
+    int i;
+    for (int j = 0; j < 30; j++) {
+        i = atoi(&character[j]);
+        if(i != 0) {
+            return 0;
+        }
+        return 1;
+    }
+
+}
+
