@@ -298,3 +298,35 @@ int esUnChar(char character[]){
 
 }
 
+void pagiandoDeAlumnos(ListaDeAlumnos* listaDeAlumnos){
+    Alumno* alumnoPibote = listaDeAlumnos->cabeza;
+    int paginaActual = 0;
+    int cantidadAlumnosPorPagina = 0;
+    printf("Ingrese Cantidad De Alumnos por pagina: \n");
+    scanf("%i",&cantidadAlumnosPorPagina);
+    int eleccionDePaginado = 1;
+    do {
+        alumnoPibote = getAlumno(listaDeAlumnos,(paginaActual*cantidadAlumnosPorPagina)+1);
+        for(int i = paginaActual*cantidadAlumnosPorPagina;i < (paginaActual*cantidadAlumnosPorPagina)+cantidadAlumnosPorPagina;i++){
+            if(alumnoPibote){
+                printearAlumno(alumnoPibote);
+            }
+            alumnoPibote = alumnoPibote->siguiente;
+        }
+        if(paginaActual != 0){ printf("1)pagina anterior");}
+        printf("2)siguiente pagina 3)buscador de pagina 0)Salir \n");
+        scanf("%i",&eleccionDePaginado);
+        if(paginaActual != 0 && eleccionDePaginado == 1){paginaActual--;}
+        if(eleccionDePaginado == 2){paginaActual++;}///TODO: VER SI TIENE SIGUIENTE:
+        if(eleccionDePaginado == 3){
+            printf("A que pagina desea ir? \n");
+            scanf("%i",&paginaActual);
+            ///TODO: NO PUEDE SER INFERIOR A 1 EL VALOR INGRESADO
+            paginaActual--;
+            if(listaDeAlumnos->cantidadAlumnos < paginaActual+1*cantidadAlumnosPorPagina){
+                paginaActual=0;
+            }
+        }
+    }while(eleccionDePaginado != 0);
+}
+
