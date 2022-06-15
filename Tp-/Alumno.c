@@ -284,7 +284,7 @@ void CargarNota(Alumno* alumno,Materia* materia){
             if(nota < 4 ){
                 ///Temporal
                 ///TODO: ESTO DESTRUYE EL NODO DE LA MATERIA PERO EL PUNTERO DEL ANTERIOR APUNTA A BASURA
-                destruirHistorialMateria(historialDeLaMateria);
+                destruirHistorialMateria(alumno->listaDeHistorialDeMaterias,historialDeLaMateria->infoMateria->idMateria);
             }else{
                 historialDeLaMateria->nota = nota;
             }
