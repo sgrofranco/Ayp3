@@ -7,7 +7,7 @@ void realizarOperacionSolicitada(int eleccionUsuario , ListaMaterias* listaDeMat
     ///TODO: Switch Case para cara opcion del Menu
     if(eleccionUsuario == 1){ ///Opcion Inscribir Alumno
         printf("Ingrese nombre del Alumno \n");
-        char nombreIngresado[30];
+        char nombreIngresado[30] = {0};
         scanf("%s",&nombreIngresado);
         printf("%s\n",nombreIngresado);
         printf("Edad del Alumno? \n");
@@ -78,12 +78,15 @@ void realizarOperacionSolicitada(int eleccionUsuario , ListaMaterias* listaDeMat
         agregarMateriaAListaDeMaterias(listaDeMaterias,nombreMateria);
     }
     if(eleccionUsuario == 8){///Buscar por id hacerlo mas lindo y con las validaciones
-        int eleccionDeBuscador = 1;
+        int eleccionDeBuscador = 2;
         int ID = 0;
         printf("Opcion 1-Materias , Opcion 2-Alumnos \n");
         do{
+            if(eleccionDeBuscador != 1 && eleccionDeBuscador != 2){
+                printf("Opcion No Valida 1-Materias , 2-Alumnos , vuelva a ingresar la opcion \n");
+            }
             scanf("%i",&eleccionDeBuscador);
-        }while(eleccionDeBuscador < 1 && eleccionDeBuscador > 2);
+        }while(eleccionDeBuscador < 1 || eleccionDeBuscador > 2);
         printf("Que ID desea Buscar? \n");
         scanf("%i",&ID);
         if(eleccionDeBuscador == 1){
