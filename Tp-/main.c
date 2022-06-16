@@ -115,8 +115,8 @@ void realizarOperacionSolicitada(int eleccionUsuario , ListaMaterias* listaDeMat
     if(eleccionUsuario == 99){ /// TODO: DEJAR ESO PARA DEMOSTRAR LA CARGA MASIVA DE ALUMNOS Y OTROS METODOS PARA LOS PUNTOS OPCIONALES
         int eleccionDesarrollador;
         printf("Modo desarrollador \n");
-        printf("1)generar 100 alumnos aleatorios \n");
-        printf("2)generar 100 materias aleatorias \n");
+        printf("1)generar alumnos aleatorios \n");
+        printf("2)generar materias aleatorias \n");
         printf("3)printear Lista Alumnos \n");
         printf("4)printear Lista Materias \n");
         scanf("%i",&eleccionDesarrollador);
