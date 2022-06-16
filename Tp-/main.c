@@ -9,13 +9,21 @@ void realizarOperacionSolicitada(int eleccionUsuario , ListaMaterias* listaDeMat
         printf("Ingrese nombre del Alumno \n");
         char nombreIngresado[30] = {0};
         scanf("%s",&nombreIngresado);
-        printf("%s\n",nombreIngresado);
-        printf("Edad del Alumno? \n");
-        int edadIngresada;
-        scanf("%i",&edadIngresada);
-        ///TODO: Validacion de edad y nombre que no sea vacio
-        agregarAlumno(listaDeAlumnos,nombreIngresado,edadIngresada);
-        printf("El alumno %s fue agregado con Numero de Registro: %li \n",nombreIngresado,listaDeAlumnos->cantidadAlumnos);
+        if(esUnChar(nombreIngresado) == 1){
+            printf("Edad del Alumno? \n");
+            char edadIngresada[4]={0};
+            int edadFinal;
+            scanf("%s",&edadIngresada);
+            edadFinal = verificadorDeValorIngresado(edadIngresada);
+            if(edadFinal != -1){
+                agregarAlumno(listaDeAlumnos,nombreIngresado,edadFinal);
+                printf("El alumno %s fue agregado con Numero de Registro: %li \n",nombreIngresado,listaDeAlumnos->cantidadAlumnos);
+            }else{
+                printf("la edad ingresada no es valida \n");
+            }
+        }else{
+            printf("Nombre ingresado no es valido \n");
+        }
     }
     if(eleccionUsuario == 2){ ///Opcion Inscribir alumno a una materia
         int idAlumno = 0;
@@ -141,6 +149,7 @@ void Menu(ListaMaterias* listaDeMaterias,ListaDeAlumnos* listaDeAlumnos){
         printf("6)Ingresar Resultado de examen \n");
         printf("7)Ingresar Nueva Materia \n");
         printf("8)Mostrar Alumno o Materia por ID\n");
+        printf("9)test\n");
         printf("0)Salir\n");
         printf("99)Modo Desarrollador \n");
         scanf("%i", &eleccionUsuario);
