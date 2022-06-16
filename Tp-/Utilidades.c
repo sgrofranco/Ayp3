@@ -141,7 +141,6 @@ void InicializarBdd(ListaDeAlumnos* listaDeAlumnos, ListaMaterias* listaMaterias
             while(puntero != NULL){
                 int idMateriaCorrelativa;
                 idMateriaCorrelativa = atoi(puntero);
-                //TODO: METODO ASIGNAR CORRELATIVA TIENE SCAN F
                 if(idMateriaCorrelativa != 0){
                     if(puntero){
                         int i = 0;
@@ -272,16 +271,14 @@ void guardarEnBdd(ListaMaterias* listaMaterias, ListaDeAlumnos* listaDeAlumnos){
     fclose(fileBddAlumno);
 }
 
-///ESTE METEDO INDICA SI SE INGERSO UN INT EN EL SCANF, DEVUELE 1 SI ES UN INT Y 0 SI HAY
-/// ALGUN CHAR EN LO INGRESADO
-int SeIngresoUnIntEnElScan(int integer){
-    if(integer == 0){
-        printf("0");
+/// Metodo ingresamos una array de chars y nos verifica si este mismo se puede transformar a integer return 0 si no puede y return 1 si puede;
+int esUnInt(char integer[]){
+    int valor = 0;
+    valor = atoi(integer);
+    if(valor == 0){
         return 0;
-    } else {
-        printf("1");
-        return 1;
     }
+    return 1;
 }
 
 ///ESTE METEDO INDICA SI SE INGERSO UN NUMERO EN EL STRING, DEVUELVE 1 SI NO HAY NUMEROS
@@ -293,8 +290,9 @@ int esUnChar(char character[]){
         if(i != 0) {
             return 0;
         }
+        return 1;
     }
- return 1;
+
 }
 
 void pagiandoDeAlumnos(ListaDeAlumnos* listaDeAlumnos){
@@ -329,3 +327,20 @@ void pagiandoDeAlumnos(ListaDeAlumnos* listaDeAlumnos){
     }while(eleccionDePaginado != 0);
 }
 
+//si returnea -1 quiere decir que algun error ocurrio;
+int verificadorDeValorIngresado( char valorIngresado[] ) {
+    int valorFinal = -1;
+    if(esUnInt(valorIngresado) == 1){
+        int validador = atoi(valorIngresado);
+        if(validador > 0){
+            valorFinal = validador;
+        }
+    }
+    return valorFinal;
+}
+
+int ingresarInteger(){
+    char ingresado[] = {0};
+    scanf(" %s",&ingresado);
+    return verificadorDeValorIngresado(ingresado);
+}
