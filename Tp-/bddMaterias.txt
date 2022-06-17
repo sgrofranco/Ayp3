@@ -1,6 +1,6 @@
-nombreMuyCopado,0
-nombreNoMuyCopado,1
-nombrePepeMateria,1:2
-nombreTuvieja,1:2:3
-nombreTest5,1:2:3:4
-testpepemama,0
+Historia del siglo XX,0
+Cultura Contemporanea,0
+Algoritmos y programacion 1,0
+Algoritmos y programacion 2,3
+Estructura de datos,4
+Algoritmos y programacion 3,4:5
