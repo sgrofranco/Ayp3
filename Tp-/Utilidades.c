@@ -3,13 +3,15 @@
 #include <stdlib.h>
 #include <string.h>
 
-void generarAlumnosAleatorios(ListaDeAlumnos* listaDeAlumnos, int maximo){
+///PRE: se le ingresa la lista de alumnos y la cantidad de alumnos que se desean crear
+///POST: modifica la lista ingresada con los nuevos alumnos generados aleatoriamente
+void generarAlumnosAleatorios(ListaDeAlumnos* listaDeAlumnos, int maximo,int mostrar){
     char *listaNombres[]= {"Adel","Adonis","Ajaz","Akos","Aldo","Amets","Amaro","Aquiles","Algimantas","Alpidio","Amrane","Anish","Arian","Ayun","Azariel","Bagrat"
             ,"Bencomo","Bertino","Candi","Cesc","Cirino","Crisologo","Cruz","Danilo","Dareck","Dariel","Darin","Delmiro","Damen","Dilan","Dipa"
             ,"Domenico","Drago","Edivaldo","Elvis","Elyan","Emeric","Engracio","Ensa","Enaut","Eleazar","Eros","Eufemio","Feiyang"
             ,"Fiorenzo","Foudil","Galo","Gaston","Giulio","Gautam","Gentil","Gianni","Gianluca","Giorgio","Gourav","Grober","Guido"
             ,"Guifre","Guim","Hermes","Inge","Irai","Iraitz","Iyad","Iyan","Jeremias","Joao","Jun","Khaled","Leonidas","Lier","Lionel"
-            ,"Lisandro","Lucian","Mael","Misael","Moad","Munir","Nael"};
+            ,"Lisandro","Lucian","Mael","Misael","Moad","Munir","Nael","Adara","Agata","Agripina","Ainhara","Aixa","Alegria","Alia","Alla","America","Aminata","Amor","Anahi","Ania","Aquilina","Ariadne","Arya","Asia","Atenea","Bella"};
 
     char *listaDeApellidos[]={"Gonzalez","Rodriguez","Gomez","Fernandez","Lopez","Martinez","Diaz","Perez","Sanchez"
             ,"Romero","Garcia","Sosa","Benitez","Ramirez","Torres","Ruiz","Flores","Alvarez","Acosta","Rojas"};
@@ -34,19 +36,22 @@ void generarAlumnosAleatorios(ListaDeAlumnos* listaDeAlumnos, int maximo){
         char nombreCompleto[50];
 
         strcpy(nombreCompleto, nombreAlumno);
-        strcat(nombreCompleto, " ");
         strcat(nombreCompleto,  apellidoAlumno);
 
-        agregarAlumno(listaDeAlumnos,nombreAlumno,edad);
-        printf("alumno: %s , edad: %i \n",nombreCompleto,edad);
+        agregarAlumno(listaDeAlumnos,nombreCompleto,edad);
+        if(mostrar == 1){
+            printf("alumno: %s , edad: %i \n",nombreCompleto,edad);
+        }
     }
 }
 
-void generarMateriasAleatorias(ListaMaterias* listaMaterias, int maximo){
+///PRE: se le Ingresa la lista de Materias y la cantidad de materias que se desean generar aleatoreamente
+///POST: Modifica la lista ingresada con las nuevas materias generadas aleatoriamente
+void generarMateriasAleatorias(ListaMaterias* listaMaterias, int maximo,int mostrar){
 
     char* listaNombres[]={ "Algoritmos y programacion","Estructura de datos", "Base de datos", "Analisis matematico",
                            "Algebra","Fisica","Sistemas de representacion","Arquitectura de computadoras",
-                           "minecraft tecnico", "Electronica", "Historia", "Filosofia", "Diseño grafico",
+                           "minecraft tecnico", "Electronica", "Historia", "Filosofia", "Disenio grafico",
                            "Quimica","Teoria de la organizacion", "Finanzas", "Impuestos","Derecho", "Defensa oral y escrita",
                            "Robotica", "Probabilidad y estadistica", "Matematica discreta", "Sistema monetario",
                            "Teoria de juegos"};
@@ -75,17 +80,20 @@ void generarMateriasAleatorias(ListaMaterias* listaMaterias, int maximo){
         strcat(nombreCompleto, nivelDefinitivo);
 
         agregarMateriaAListaDeMateriasSinCorrelativas(listaMaterias,nombreCompleto);
-        printf("materia: %s \n",nombreCompleto);
+
+        if(mostrar == 1){
+            printf("materia: %s \n",nombreCompleto);
+        }
 
     }
 }
 
+
 void cargarHistorialAlAlumno(ListaMaterias* listaMaterias,ListaDeAlumnos* listaDeAlumnos,long int idalumno , int idMateria , int nota){
     Alumno* alumno = getAlumno(listaDeAlumnos,idalumno);
     Materia* materia = getMateria(listaMaterias,idMateria);
-    agregarMateriaAAlumno(alumno,materia);
+    agregarMateriaAAlumno(alumno,materia,1);
     HistorialDeLaMateria* historialDeLaMateria = alumno->listaDeHistorialDeMaterias->cabeza;
-    ///TODO:Ver DE cambiar el metodo cambiarNota o dejarlo asi
     if(nota != 0){
         do {
             if(historialDeLaMateria->infoMateria->idMateria == materia->idMateria){
@@ -103,6 +111,7 @@ void cargarHistorialAlAlumno(ListaMaterias* listaMaterias,ListaDeAlumnos* listaD
 
 void InicializarBdd(ListaDeAlumnos* listaDeAlumnos, ListaMaterias* listaMaterias){
     ///bdd Materia
+    printf("Cargando BDD Materia... \n");
     FILE* fileBddMaterias;
     fileBddMaterias = fopen("../bddMaterias.txt","r");
     char lineBddMateria [128] = {0};
@@ -132,9 +141,8 @@ void InicializarBdd(ListaDeAlumnos* listaDeAlumnos, ListaMaterias* listaMaterias
             materia->siguiente = nuevaMateria;
         }
         while(lineaSplitMateria != NULL){
-            char correlativas[11];
+            char correlativas[40];
             char *puntero;
-            ///TODO: MEJORAR ESTO
             Materia* materia = getMateria(listaMaterias,lineaActualMateria);
             strcpy(correlativas,lineaSplitMateria);
             puntero = strtok(correlativas,":");
@@ -156,7 +164,9 @@ void InicializarBdd(ListaDeAlumnos* listaDeAlumnos, ListaMaterias* listaMaterias
         }
     }
     fclose(fileBddMaterias);
+    printf("BDD Materia cargada\n");
     ///bdd alumno
+    printf("Cargando BDD Alumnos... \n");
     FILE* fileBddAlumno;
     fileBddAlumno = fopen("../bddAlumnos.txt", "r");
     char line[128] = {0};
@@ -191,6 +201,7 @@ void InicializarBdd(ListaDeAlumnos* listaDeAlumnos, ListaMaterias* listaMaterias
         }
     }
     fclose(fileBddAlumno);
+    printf("BDD Alumnos Cargada \n");
 }
 void guardarEnBdd(ListaMaterias* listaMaterias, ListaDeAlumnos* listaDeAlumnos){
     FILE* fileBddMateria;
@@ -199,17 +210,16 @@ void guardarEnBdd(ListaMaterias* listaMaterias, ListaDeAlumnos* listaDeAlumnos){
     int lineaActual = 0;
     while(materia){
         lineaActual++;
-        char correlativas[11] = {0};
-        char lineaAEscribir[40]= {0};
+        char correlativas[40] = {0};
+        char lineaAEscribir[128]= {0};
         int tieneCorrelativas = 0;
         strcat(lineaAEscribir,materia->nombreMateria);
         for(int i = 0 ; i < 5 ; i++){
             if(materia->arrayCorrelativas[i]->idMateria != 0){
                 if(i != 0){ strcat(correlativas,":");}
-                char idmateria[3] = {0};
+                char idmateria[10] = {0};
                 itoa(materia->arrayCorrelativas[i]->idMateria,idmateria,10);
                 strcat(correlativas,idmateria);
-                printf("guarda correlativa : %s \n " , idmateria);
                 tieneCorrelativas++;
             }
         }
@@ -219,7 +229,6 @@ void guardarEnBdd(ListaMaterias* listaMaterias, ListaDeAlumnos* listaDeAlumnos){
         }else{
             strcat(lineaAEscribir,",0");
         }
-        printf("linea: %s \n",lineaAEscribir);
         fprintf(fileBddMateria,"%s\n",lineaAEscribir);
         materia = materia->siguiente;
     }
@@ -234,16 +243,15 @@ void guardarEnBdd(ListaMaterias* listaMaterias, ListaDeAlumnos* listaDeAlumnos){
     lineaActual = 0;
     while(alumno){
         lineaActual++;
-        char lineaAEscribir[60] = {0};
+        char lineaAEscribir[128] = {0};
         strcpy(lineaAEscribir,alumno->Nombre);
         strcat(lineaAEscribir,",");
         char edad[3] = {0};
         itoa(alumno->edad,edad,10);
         strcat(lineaAEscribir,edad);
-        printf(" linea a escribir alumno : %s \n",lineaAEscribir);
         HistorialDeLaMateria* historialDeLaMateria = alumno->listaDeHistorialDeMaterias->cabeza;
         while(historialDeLaMateria){
-            char historialDeLaMateriaACargar[6] = {0};
+            char historialDeLaMateriaACargar[20] = {0};
             if(historialDeLaMateria == alumno->listaDeHistorialDeMaterias->cabeza){
                 strcat(historialDeLaMateriaACargar,",");
             }else{
@@ -253,7 +261,6 @@ void guardarEnBdd(ListaMaterias* listaMaterias, ListaDeAlumnos* listaDeAlumnos){
             itoa(historialDeLaMateria->infoMateria->idMateria,idmateria,10);
             strcat(historialDeLaMateriaACargar,idmateria);
             strcat(historialDeLaMateriaACargar,"!");
-            printf(" linea a escribir alumno : %s \n",historialDeLaMateriaACargar);
             if(historialDeLaMateria->nota != NULL){
                 char nota[2] = {0};
                 itoa(historialDeLaMateria->nota,nota,10);
@@ -264,7 +271,6 @@ void guardarEnBdd(ListaMaterias* listaMaterias, ListaDeAlumnos* listaDeAlumnos){
             strcat(lineaAEscribir,historialDeLaMateriaACargar);
             historialDeLaMateria = historialDeLaMateria->siguiente;
         }
-        printf(" linea definitiva a escribir %s \n",lineaAEscribir);
         fprintf(fileBddAlumno,"%s\n",lineaAEscribir);
         alumno = alumno->siguiente;
     }
@@ -302,6 +308,10 @@ void pagiandoDeAlumnos(ListaDeAlumnos* listaDeAlumnos){
     int cantidadAlumnosPorPagina = 0;
     printf("Ingrese Cantidad De Alumnos por pagina: \n");
     scanf("%i",&cantidadAlumnosPorPagina);
+    if(cantidadAlumnosPorPagina<1){
+        printf("El valor ingresado no es valido, se mostrarar por cantidad default, de 5 Materias por pagina \n");
+        cantidadAlumnosPorPagina = 5;
+    }
     int eleccionDePaginado = 1;
     do {
         alumnoPibote = getAlumno(listaDeAlumnos,(paginaActual*cantidadAlumnosPorPagina)+1);
@@ -343,6 +353,10 @@ void pagiandoDeMaterias(ListaMaterias * listaDeMaterias){
     int cantidadMateriasPorPagina = 0;
     printf("Ingrese Cantidad De Materias por pagina: \n");
     scanf("%i",&cantidadMateriasPorPagina);
+    if(cantidadMateriasPorPagina<1){
+        printf("El valor ingresado no es valido, se mostrarar por cantidad default, de 5 Materias por pagina \n");
+        cantidadMateriasPorPagina = 5;
+    }
     int eleccionDePaginado = 1;
     do {
         materiaPibote = getMateria(listaDeMaterias, (paginaActual * cantidadMateriasPorPagina) + 1);
