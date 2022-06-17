@@ -32,8 +32,11 @@ void realizarOperacionSolicitada(int eleccionUsuario , ListaMaterias* listaDeMat
         printf("Id de la Materia a la que desea inscribirlo:\n");
         int idMateria = 0;
         scanf("%i",&idMateria);
-        ///TODO: Comprobar existencias de Alumno y Materia;
-        AnotarseAMateria(listaDeMaterias,listaDeAlumnos,idMateria,idAlumno);
+        if((idAlumno > 0 && idAlumno <= listaDeAlumnos->cantidadAlumnos) && (idMateria > 0 && idMateria <= listaDeMaterias->cantidadMaterias)){
+            AnotarseAMateria(listaDeMaterias,listaDeAlumnos,idMateria,idAlumno);
+        } else{
+            printf("valores Ingresados invalidos \n");
+        }
     }
     if(eleccionUsuario == 3){///Buscar Por rango de edad
         int edadMinima;
@@ -43,7 +46,11 @@ void realizarOperacionSolicitada(int eleccionUsuario , ListaMaterias* listaDeMat
         scanf("%i",&edadMinima);
         printf("edad Maxima");
         scanf("%i",&edadMaxima);
-        MostrarAlumnosPorRangoDeEdad(listaDeAlumnos,edadMinima,edadMaxima);
+        if(edadMinima <= edadMaxima && (edadMaxima > 0 && edadMinima >0)){
+            MostrarAlumnosPorRangoDeEdad(listaDeAlumnos,edadMinima,edadMaxima);
+        }else{
+            printf("valores Ingresados Invalidos \n");
+        }
     }
     if(eleccionUsuario == 4){///Buscar Por Nombre
         char nombreABuscar[30];
@@ -60,7 +67,11 @@ void realizarOperacionSolicitada(int eleccionUsuario , ListaMaterias* listaDeMat
         long int idAlumnoABuscar;
         printf("ID del alumno que desea obtener el promedio: \n");
         scanf("%li",&idAlumnoABuscar);
-        getPromedioAlumno(listaDeAlumnos,idAlumnoABuscar);
+        if(idAlumnoABuscar > 0 && idAlumnoABuscar <= listaDeAlumnos->cantidadAlumnos){
+            getPromedioAlumno(listaDeAlumnos,idAlumnoABuscar);
+        }else{
+            printf("No existe Alumno con esa ID \n");
+        }
     }
     if(eleccionUsuario == 6){///Rendir Materia
         printf("Id Del Alumno que desea ingresar la nota \n");
@@ -112,6 +123,8 @@ void realizarOperacionSolicitada(int eleccionUsuario , ListaMaterias* listaDeMat
             }
         }
     }
+    if(eleccionUsuario == 9){ pagiandoDeAlumnos(listaDeAlumnos); }
+    if(eleccionUsuario == 10){ pagiandoDeMaterias(listaDeMaterias);}
     if(eleccionUsuario == 99){ /// TODO: DEJAR ESO PARA DEMOSTRAR LA CARGA MASIVA DE ALUMNOS Y OTROS METODOS PARA LOS PUNTOS OPCIONALES
         int eleccionDesarrollador;
         printf("Modo desarrollador \n");
@@ -149,7 +162,8 @@ void Menu(ListaMaterias* listaDeMaterias,ListaDeAlumnos* listaDeAlumnos){
         printf("6)Ingresar Resultado de examen \n");
         printf("7)Ingresar Nueva Materia \n");
         printf("8)Mostrar Alumno o Materia por ID\n");
-        printf("9)test\n");
+        printf("9)test printear alumno paginado\n");
+        printf("10)test printear materia \n");
         printf("0)Salir\n");
         printf("99)Modo Desarrollador \n");
         scanf("%i", &eleccionUsuario);
