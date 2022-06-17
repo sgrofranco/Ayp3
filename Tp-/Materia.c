@@ -1,11 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-/*
- * SETUP:
- *  Settings:
- *      1) Una materia no puede tener mas de 5 correlativas;
- */
+
 typedef struct Materia{
     int idMateria;
     char nombreMateria[30];
@@ -13,8 +9,9 @@ typedef struct Materia{
     struct Materia* arrayCorrelativas[5];
 } Materia;
 
+///PRE: if nota == Null esta anotado , if nota != Null Rindo bien; si rinde mal se borra.
 typedef struct HistorialDeLaMateria{
-    int nota; // if nota == Null esta anotado , if nota != Null Rindo bien; si rinde mal se borra.
+    int nota;
     Materia* infoMateria;
     struct HistorialDeLaMateria* siguiente;
 } HistorialDeLaMateria;
@@ -77,7 +74,6 @@ void printearMateria(ListaMaterias* listaMaterias,int idMateria){
     printearNombreDeMaterias(materia->arrayCorrelativas);
 }
 
-//TODO: HACER ESTO MAS LINDO
 void printearListaDeMaterias(ListaMaterias* lista){
     Materia* materia = lista->cabeza;
     printf("-----LISTA DE MATERIAS----\n");
@@ -128,6 +124,7 @@ void agregarMateriaAListaDeMaterias(ListaMaterias* lista , char nombre[]){
         nuevaMateria->idMateria = lista->cantidadMaterias;
         materia->siguiente = nuevaMateria;
         AsignarCorrelativas(lista,nuevaMateria);
+        printf("se agrego la materia %s , con ID: %i \n",nuevaMateria->nombreMateria,nuevaMateria->idMateria);
     }
 }
 
