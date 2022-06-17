@@ -23,8 +23,8 @@ A partir de estos elemenos creamos las listas y creamos un menu en el cual se pu
 
 #### Consignas extra:
 * Soporte de paginado(Con posibilidad de elegir la página y la cantidad de items por c/u).
-* Generación masiva de estudiantes para testeo (Para esto acceder al modo desarrollador).
-* Generación masiva de Materias para testeo (Para esto acceder al modo desarrollador).
+* Generación masiva de estudiantes para testeo (Usar opcion "99", modo desarrolaldor).
+* Generación masiva de Materias para testeo (Usar opcion "99", modo desarrolaldor).
 * Soporte de correlatividad para cada materia
 * Promedios de cada alumno
 * Persistencia
