@@ -294,7 +294,8 @@ int esUnChar(char character[]){
     }
 
 }
-
+///TODO: TESTEAR AMBOS PAGINADOS
+///TODO: PROBLEMA EN PRINTEO DE PAGINA MAX LO HACE MAL
 void pagiandoDeAlumnos(ListaDeAlumnos* listaDeAlumnos){
     Alumno* alumnoPibote = listaDeAlumnos->cabeza;
     int paginaActual = 0;
@@ -305,22 +306,72 @@ void pagiandoDeAlumnos(ListaDeAlumnos* listaDeAlumnos){
     do {
         alumnoPibote = getAlumno(listaDeAlumnos,(paginaActual*cantidadAlumnosPorPagina)+1);
         for(int i = paginaActual*cantidadAlumnosPorPagina;i < (paginaActual*cantidadAlumnosPorPagina)+cantidadAlumnosPorPagina;i++){
-            if(alumnoPibote){
+            if(alumnoPibote != NULL){
                 printearAlumno(alumnoPibote);
             }
-            alumnoPibote = alumnoPibote->siguiente;
+           if(alumnoPibote->siguiente != NULL){
+               alumnoPibote = alumnoPibote->siguiente;
+           } else{
+               break;
+           }
         }
         if(paginaActual != 0){ printf("1)pagina anterior");}
-        printf("2)siguiente pagina 3)buscador de pagina 0)Salir \n");
+        printf("2)siguiente pagina 3)buscador de pagina 0)Salir ----pagina %i / %i ----\n",paginaActual+1,listaDeAlumnos->cantidadAlumnos/cantidadAlumnosPorPagina);
         scanf("%i",&eleccionDePaginado);
         if(paginaActual != 0 && eleccionDePaginado == 1){paginaActual--;}
-        if(eleccionDePaginado == 2){paginaActual++;}///TODO: VER SI TIENE SIGUIENTE:
+        if(eleccionDePaginado == 2 && listaDeAlumnos->cantidadAlumnos > (paginaActual+1)*cantidadAlumnosPorPagina){;
+            paginaActual++;
+        }
         if(eleccionDePaginado == 3){
             printf("A que pagina desea ir? \n");
             scanf("%i",&paginaActual);
-            ///TODO: NO PUEDE SER INFERIOR A 1 EL VALOR INGRESADO
             paginaActual--;
-            if(listaDeAlumnos->cantidadAlumnos < paginaActual+1*cantidadAlumnosPorPagina){
+            if(paginaActual < 0){
+                printf("la pagina no puede ser negativa o 0\n");
+            }
+            if(listaDeAlumnos->cantidadAlumnos < (paginaActual)*cantidadAlumnosPorPagina){
+                printf("no existe tal pagina , se volvera a la pagina 0 \n");
+                paginaActual=0;
+            }
+        }
+    }while(eleccionDePaginado != 0);
+}
+
+void pagiandoDeMaterias(ListaMaterias * listaDeMaterias){
+    Materia* materiaPibote = listaDeMaterias->cabeza;
+    int paginaActual = 0;
+    int cantidadMateriasPorPagina = 0;
+    printf("Ingrese Cantidad De Materias por pagina: \n");
+    scanf("%i",&cantidadMateriasPorPagina);
+    int eleccionDePaginado = 1;
+    do {
+        materiaPibote = getMateria(listaDeMaterias, (paginaActual * cantidadMateriasPorPagina) + 1);
+        for(int i = paginaActual * cantidadMateriasPorPagina; i < (paginaActual * cantidadMateriasPorPagina) + cantidadMateriasPorPagina; i++){
+            if(materiaPibote != NULL){
+                printearMateria(listaDeMaterias,materiaPibote->idMateria);///TODO: DEJAR ASI O CAMBIAR METODO PARA SOLO PASARLE LA MATERIA;
+            }
+            if(materiaPibote->siguiente != NULL){
+                materiaPibote = materiaPibote->siguiente;
+            } else{
+                break;
+            }
+        }
+        if(paginaActual != 0){ printf("1)pagina anterior");}
+        printf("2)siguiente pagina 3)buscador de pagina 0)Salir ----pagina %i / %i ----\n",paginaActual+1, listaDeMaterias->cantidadMaterias / cantidadMateriasPorPagina);
+        scanf("%i",&eleccionDePaginado);
+        if(paginaActual != 0 && eleccionDePaginado == 1){paginaActual--;}
+        if(eleccionDePaginado == 2 && listaDeMaterias->cantidadMaterias > (paginaActual + 1) * cantidadMateriasPorPagina){;
+            paginaActual++;
+        }
+        if(eleccionDePaginado == 3){
+            printf("A que pagina desea ir? \n");
+            scanf("%i",&paginaActual);
+            paginaActual--;
+            if(paginaActual < 0){
+                printf("la pagina no puede ser negativa o 0\n");
+            }
+            if(listaDeMaterias->cantidadMaterias < (paginaActual) * cantidadMateriasPorPagina){
+                printf("no existe tal pagina , se volvera a la pagina 0 \n");
                 paginaActual=0;
             }
         }
