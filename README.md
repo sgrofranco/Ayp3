@@ -9,7 +9,7 @@ Crear un sistema de estudiantes en C, que consistia de 2 listas que interacturan
 
 Para empezar creamos los 2 struct esenciales, el struct "Alumno", el cual contenia informacion de este y un arrelgo de historial de materias, y el struct "Materia" que tambien contenia su informacion esencial y una lista de materias correlativas. Para esto ultimo, creamos un tercer struct "HistorialDeMateria", el cual consistia en una nota y un puntero a la materia de la cual es historial para obtener sus datos. 
 
-A partir de estos elemenos creamos las listas y creamos un menu en el cual se puede soliticar las acciones soportadas por cada una de las listas. Adicionalmente agregamos un archivo "Utildiades" el cual contiente todos los metodos auxiliares y aquellos metodos encargados de la persistencia.
+A partir de estos elemenos creamos las listas y creamos un menu en el cual se puede soliticar las acciones soportadas por cada una de las listas. Adicionalmente agregamos un archivo "Utilidades" el cual contiente todos los metodos auxiliares y aquellos metodos encargados de la persistencia.
 
 ## Listado de consignas realiazadas en el trabajo.
 
