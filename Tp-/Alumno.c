@@ -293,8 +293,3 @@ void CargarNota(Alumno* alumno,Materia* materia){
         }
     }
 }
-void RendirMateria(ListaDeAlumnos* listaDeAlumnos , ListaMaterias* listaDeMaterias,int idMateria , long int idAlumno){
-    Materia* materia = getMateria(listaDeMaterias,idMateria);
-    Alumno* alumno = getAlumno(listaDeAlumnos,idAlumno);
-    CargarNota(alumno,materia);
-}
