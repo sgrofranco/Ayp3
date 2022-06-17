@@ -26,6 +26,7 @@ Alumno* CrearAlumno(char nombre[] , int edad){
 };
 
 void printearAlumno(Alumno* alumno){
+    printf("-----------------------\n");
     printf("Nombre: %s \n",alumno->Nombre);
     printf("edad: %i \n",alumno->edad);
     printf("legajo: %li \n",alumno->numeroLegajo);
@@ -84,7 +85,6 @@ void printearListaDeAlumnos(ListaDeAlumnos* lista){
     Alumno* alumno = lista->cabeza;
     printf("-----LISTA DE ALUMNOS----\n");
     do{
-        printf("-----------------------\n");
         printearAlumno(alumno);
         alumno = alumno->siguiente;
     } while (alumno != NULL);
@@ -92,9 +92,6 @@ void printearListaDeAlumnos(ListaDeAlumnos* lista){
 
 }
 
-//Aca podemos implementar otro metodo ya que no necesita estar ordenado
-//de esta forma lo ubica siempre en el fondo ordenado por el numero de legajo
-//pero si lo agregamos siempre al principo no es necesario recorrerlo siempre
 void agregarAlumno(ListaDeAlumnos* lista,char nombre[], int edad){
     if(lista->cabeza == NULL){
         lista->cantidadAlumnos++;
@@ -133,11 +130,16 @@ int nombreContieneBuscado(char nombreAlumno[],char nombreABuscar[]){
 
 void buscarAlumnoPorNombre(ListaDeAlumnos* listaDeAlumnos,char nombreABuscar[]){
     Alumno* alumno = listaDeAlumnos->cabeza;
+    int cantidadAlumnosEncontrados = 0;
     while(alumno){
         if(nombreContieneBuscado(alumno->Nombre,nombreABuscar) == 1){
             printf("Alumno nombre: %s  ID: %li\n", alumno->Nombre,alumno->numeroLegajo);
+            cantidadAlumnosEncontrados++;
         }
         alumno = alumno->siguiente;
+    }
+    if(cantidadAlumnosEncontrados == 0){
+        printf("No se Encontraron Alumnos con ese Nombre");
     }
 }
 
@@ -173,10 +175,12 @@ void getPromedioAlumno(ListaDeAlumnos * lista,long int idAlumnoABuscar) {
     }
 }
 
-/// TODO: Volver a cambiar este metodo para revisar las correlativas
-void agregarMateriaAAlumno(Alumno* alumno, Materia* materia){
+void agregarMateriaAAlumno(Alumno* alumno, Materia* materia,int cargaBdd){
     if (alumno->listaDeHistorialDeMaterias->cabeza == NULL){
         alumno->listaDeHistorialDeMaterias->cabeza = CrearHsitorialDeLaMaateria(materia);
+        if(cargaBdd == 0){
+            printf("Se anoto al alumno %s a la materia %s \n",alumno->Nombre,materia->nombreMateria);
+        }
     } else {
         HistorialDeLaMateria* historialDeLaMateria = alumno->listaDeHistorialDeMaterias->cabeza;
         do {
@@ -198,7 +202,9 @@ void agregarMateriaAAlumno(Alumno* alumno, Materia* materia){
         }else{
             HistorialDeLaMateria* nuevoHistorialDeLaMateria = CrearHsitorialDeLaMaateria(materia);
             historialDeLaMateria->siguiente = nuevoHistorialDeLaMateria;
-            printf("Se anoto al alumno %s a la materia %s \n",alumno->Nombre,materia->nombreMateria);
+            if(cargaBdd == 0){
+                printf("Se anoto al alumno %s a la materia %s \n",alumno->Nombre,materia->nombreMateria);
+            }
         }
     }
 }
@@ -224,7 +230,6 @@ int VerificarMateriaAprobada(int idMateria , Alumno* alumno){
 
 ///Este Metodo nos permite saber si el alumno tiene aprobadas las correlativas necesarias para Anotarse a esta materia
 ///Si returnea 0 quiere decir que puede anotarse a la materia , si returnea 1 quiere decir que le faltan aprobar algunas correlativas
-
 int verificadorDeMateriasCorrelativas(Materia* materia,Alumno* alumno){
     int existenMateriasCorrelativasNoAprobadas = 0;
     int i = 0;
@@ -245,12 +250,11 @@ int verificadorDeMateriasCorrelativas(Materia* materia,Alumno* alumno){
     return existenMateriasCorrelativasNoAprobadas;
 }
 
-//TODO: AHORA QUE EXISTEN LAS CORRELATIVAS TENEMOS QUE VOLVER A HACER ESTE METODO
 void AnotarseAMateria(ListaMaterias* listaDeMaterias, ListaDeAlumnos* listaDeAlumnos, int idMateria, long int idAlumno){
     Materia* materia = getMateria(listaDeMaterias,idMateria);
     Alumno* alumno = getAlumno(listaDeAlumnos,idAlumno);
     if(verificadorDeMateriasCorrelativas(materia,alumno) == 0){
-        agregarMateriaAAlumno(alumno,materia);
+        agregarMateriaAAlumno(alumno,materia,0);
     } else{
         printf("por lo tanto no se puede anotar a la materia \n");
     }
@@ -282,14 +286,10 @@ void CargarNota(Alumno* alumno,Materia* materia){
                 }
             }while(nota > 10 || nota <1);
             if(nota < 4 ){
-                ///Temporal
-                ///TODO: ESTO DESTRUYE EL NODO DE LA MATERIA PERO EL PUNTERO DEL ANTERIOR APUNTA A BASURA
                 destruirHistorialMateria(alumno->listaDeHistorialDeMaterias,historialDeLaMateria->infoMateria->idMateria);
             }else{
                 historialDeLaMateria->nota = nota;
             }
-            // el puntero siguiente del anterior como quedara?
-            //nota de aprobado es 4
         }
     }
 }
