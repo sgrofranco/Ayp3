@@ -3,7 +3,7 @@ Integrantes: Franco Sgro y Lucas Espindola.
 
 ## Consigna:
 
-Crear un sistema de estudiantes en C, que consistia de 2 listas que interacturan entre si y pudieran ejecutar una serie de acciones.
+Crear un sistema de estudiantes en C, que consistia de 2 listas que interactuaran entre si y pudieran ejecutar una serie de acciones.
 
 ## Desarollo:
 
