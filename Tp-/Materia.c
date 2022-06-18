@@ -92,7 +92,6 @@ void AsignarCorrelativas(ListaMaterias* lista , Materia* materia){
     if(eleccion == 1){
         int contadorCorrelativas = 0;
         while (eleccion != 0 && contadorCorrelativas<5){
-            printearListaDeMaterias(lista);
             printf("Ingrese la ID de la correlativa que desea agregar?: \n");
             printf("(Ingrese 0 para dejar de agregar correlativas) \n");
 
