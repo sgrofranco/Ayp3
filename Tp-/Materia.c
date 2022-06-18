@@ -90,19 +90,36 @@ void AsignarCorrelativas(ListaMaterias* lista , Materia* materia){
 
     scanf("%i",&eleccion);
     if(eleccion == 1){
-        while (eleccion != 0){
+        int contadorCorrelativas = 0;
+        while (eleccion != 0 && contadorCorrelativas<5){
             printearListaDeMaterias(lista);
-            printf("Que Correlativa desea agregar?: \n");
+            printf("Ingrese la ID de la correlativa que desea agregar?: \n");
             printf("(Ingrese 0 para dejar de agregar correlativas) \n");
 
             scanf("%i",&eleccion);
+
+            int yaEsCorrelatva = 0;
             int i = 0;
             while (materia->arrayCorrelativas[i]->idMateria != 0){
+                if (materia->idMateria == eleccion){
+                    printf("Una materia no puede ser correlativa de ella misma\n");
+                    yaEsCorrelatva++;
+                }
+                if (materia->arrayCorrelativas[i]->idMateria == eleccion){
+                    printf("Esa materia ya es correlativa\n");
+                    yaEsCorrelatva++;
+                }
                 i++;
             }
-            if(eleccion != 0){
+            if(eleccion != 0 && (eleccion > 0 && eleccion < lista->cantidadMaterias) && yaEsCorrelatva == 0){
                 materia->arrayCorrelativas[i] = getMateria(lista, eleccion);
+                contadorCorrelativas++;
+            } else if (eleccion != 0){
+                printf("Ingrese una ID valida\n");
             }
+        }
+        if (contadorCorrelativas == 5){
+            printf("Se alcanzo el maximo de correlativas posibles\n");
         }
     }
 }
