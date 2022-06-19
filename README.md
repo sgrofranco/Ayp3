@@ -31,3 +31,6 @@ A partir de estos elemenos creamos las listas y creamos un menu en el cual se pu
 * Varias validaciones complejas
 
 En el caso de la persistencia y la carga masiva, se realizaron testos de hasta 50000 alumnos y 50000 materias simultaneamente y si bien funcionaba, los tiempos de carga eran considerablemente altos.
+
+Link a la presentacion del trabajo:
+https://youtu.be/58uiTUOKhyQ
