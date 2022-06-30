@@ -1,0 +1,9 @@
+EstabanQuito,65,1!6:2!8:3!5
+LeoParedes,88,1!7:2!4
+ArianaGonzalez,19,1!5:3!6
+SofiaLopez,43,1!4
+LucasRodriguez,24,1!8
+MartinShacoscu,28,1!0
+GeronimoGutierrez,31,1!0
+LucasEspindola,24
+FrancoSgro,21
