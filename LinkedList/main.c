@@ -18,34 +18,64 @@ Nodo* CrearNodo(int dato){
     return nodo;
 }
 
-
-void DestruirNodo(Nodo* nodo){
-    free(nodo);
-}
-
-void PrintearNodo(Nodo* nodo){
-    printf("%i\n", nodo->dato);
-}
-
-void InsertarAlPrincipio(Lista* lista, int* entero){
-    Nodo* nodo = CrearNodo(entero);
+void InsertarAlPrincipio(Lista* lista, Nodo* nodo){
     nodo->siguiente = lista->cabeza;
     lista->cabeza = nodo;
     lista->largo++;
 }
 
-void InsertarAlFinal(Lista* lista, int* entero){
-    Nodo* nodo = CrearNodo(entero);
-    if (lista->cabeza == NULL){
-        lista->cabeza = nodo;
-    } else {
-        Nodo* puntero = lista->cabeza;
-        while (puntero->siguiente){
+void DestruirNodo(Nodo* nodo){
+    free(nodo);
+}
+
+void insertarNodo(Nodo* puntero,Nodo* nuevoNodo){
+    if(puntero->siguiente){
+        if(puntero->siguiente->dato < nuevoNodo->dato){
             puntero = puntero->siguiente;
+            puntero->siguiente = nuevoNodo;
+        }else{
+            nuevoNodo->siguiente = puntero->siguiente;
         }
-        puntero->siguiente=nodo;
     }
-    lista->largo++;
+    puntero->siguiente = nuevoNodo;
+}
+
+void printearLista (struct Nodo* n){
+    printf("[");
+    while (n != NULL){
+        printf("%i,", n->dato);
+        n = n->siguiente;
+    }
+    printf("]\n");
+}
+
+int insertarOrdenado(int valor ,Lista* lista){
+    Nodo* nodo = CrearNodo(valor);
+    if(lista->cabeza == NULL){
+        lista->cabeza = nodo;
+    }else{
+        Nodo* puntero = lista->cabeza;
+        if(puntero->dato >= valor){
+            InsertarAlPrincipio(lista , nodo);
+        }else if(!puntero->siguiente){
+            insertarNodo(puntero,nodo);
+            lista->largo++;
+        }else{
+            for(int i = 0; i <= lista->largo-1 ; i++){
+                if(puntero->siguiente->dato > valor){
+                    insertarNodo(puntero,nodo);
+                    lista->largo++;
+                    i = lista->largo +2;
+                }else if(i==lista->largo-1){
+                    insertarNodo(puntero,nodo);
+                    lista->largo++;
+                    i= lista->largo +2;
+                }
+                puntero = puntero->siguiente;
+
+            }
+        }
+    }
 }
 
 Lista* InicializarLista(int array[], int largoDelArray){
@@ -53,21 +83,12 @@ Lista* InicializarLista(int array[], int largoDelArray){
     lista->cabeza = NULL;
     lista->largo = 0;
     for(int i = 0; i < largoDelArray; i++){
-        InsertarAlFinal(lista,array[i]);
+        insertarOrdenado(array[i],lista);
     }
     return lista;
 }
 
-
-void printearLista (struct Nodo* n){
-
-   while (n != NULL){
-       printf("%i\n", n->dato);
-       n = n->siguiente;
-   }
-}
-
-int Obtener(int entero, Lista* lista){
+Nodo* ObtenerNodo(int entero, Lista* lista){
     if(lista->cabeza == NULL){
         return NULL;
     } else {
@@ -80,7 +101,7 @@ int Obtener(int entero, Lista* lista){
         if (posicion != entero){
             return NULL;
         } else {
-            return puntero->dato;
+            return puntero;
         }
     }
 }
@@ -97,7 +118,6 @@ void EliminarElemento(int posicion, Lista* lista){
             int posicionActual =0;
             while (posicionActual < (posicion-1) && puntero->siguiente){
                 puntero = puntero->siguiente;
-                PrintearNodo(puntero);
                 posicionActual++;
             }
             Nodo* eliminado = puntero->siguiente;
@@ -109,40 +129,81 @@ void EliminarElemento(int posicion, Lista* lista){
 }
 
 int LargoDeLista(Lista* lista){
-    return lista->largo;
-}
-
-Lista OrdenarLista(Lista* lista){
-
-    int minimo = 0;
-    Nodo* Auxiliar = CrearNodo(0);
-
-    for (int i = 0; i < lista->largo; i++){
-
-        minimo=i;
-
-        for(int j = 0; j < lista->largo-i; j++){
-            if(Obtener(j, lista)< Obtener(minimo, lista)){
-                minimo=j;
-            }
-        }
-        Auxiliar = 
-    }
-
-
+    return lista->largo +1;
 }
 
 int main() {
 
-    int pepe[] = {1,3,2,4,1,2,41,5,12};
-    Lista* pepelista = InicializarLista(pepe, sizeof (pepe)/sizeof pepe[0]);
-    printearLista(pepelista->cabeza);
-    printf("El LARGO FINAL ES: %i\n",LargoDeLista(pepelista));
-    EliminarElemento(3,pepelista);
-    printearLista(pepelista->cabeza);
-    printf("El LARGO FINAL ES: %i\n",LargoDeLista(pepelista));
+    int valoresLista[] = {1, 3, 2, 4, 1, 2, 41, 5, 12};
+    Lista* linkedList = InicializarLista(valoresLista, sizeof (valoresLista) / sizeof valoresLista[0]);
+
+    int eleccionUsuario = 1;
+    int valorIngresado = NULL;
+
+    // Menu De Usuario
+    while (eleccionUsuario != 0){
+        valorIngresado=NULL;
+        printf("-------Menu------ \n");
+        printf("elija la accion que quiera realizar \n");
+        printf("1- aniadir elemento a la lista \n");
+        printf("2- eliminar elemento de la lista \n");
+        printf("3- obtener elemento \n");
+        printf("4- Mostrar Lista \n");
+        printf("5- Largo de la Lista \n");
+        printf("0- salir del sistema\n");
+        printf("que accion quiere realizar?\n");
+        scanf("%i", &eleccionUsuario);
+        switch (eleccionUsuario){
+            //Switch Case con la opcion elegida por el Usuario
+            case 1:
+                printf("Que Elemento desea agregar a la lista? \n");
+                scanf("%i",&valorIngresado);
+                insertarOrdenado(valorIngresado,linkedList);
+                break;
+            case 2:
+                printf("Que Elemento desea eliminar de la lista? \n");
+                scanf("%i",&valorIngresado);
+                while(valorIngresado -1 < 1 || valorIngresado > linkedList->largo){
+                    printf("Elemento invalido , este pertenece a una posicion no existente en la lista \n");
+                    scanf("%i",&valorIngresado);
+                }
+                EliminarElemento(valorIngresado-1,linkedList);
+                break;
+            case 3:
+                printf("De Que elemento desea obtener el valor? \n");
+                scanf("%i",&valorIngresado);
+                while(valorIngresado -1 < 1 || valorIngresado > linkedList->largo){
+                    printf("Elemento invalido , este pertenece a una posicion no existente en la lista \n");
+                    scanf("%i",&valorIngresado);
+                }
+                printf("El Valor de ese elemento es: %i \n", ObtenerNodo(valorIngresado-1,linkedList)->dato);
+                break;
+            case 4:
+                printearLista(linkedList->cabeza);
+                break;
+            case 5:
+                printf("El Largo de la Lista es: %i \n",linkedList->largo);
+                break;
+            case 0:
+                printf("Hasta la Proxima \n");
+                break;
+            default: //esto ocurre unicamente cuando el usuario pone una opcion invalida;
+                printf("La Opcion elegida no existe, Vuelva a elegir nuevamente \n");
+                break;
+        }
+    }
+
+
+    /*printf("creacion lista: \n");
+    printearLista(linkedList->cabeza);
+    printf("El LARGO FINAL ES: %i\n",LargoDeLista(linkedList));
+    EliminarElemento(3,linkedList);
+    printf("Post Eliminar Elemento: \n");
+    printearLista(linkedList->cabeza);
+    printf("El ObtenerNodo da: %i \n", ObtenerNodo(4, linkedList)->dato);
+    printf("El LARGO FINAL ES: %i\n",LargoDeLista(linkedList));
+    printearLista(linkedList->cabeza);*/
+
 
     return 0;
 }
-
-
